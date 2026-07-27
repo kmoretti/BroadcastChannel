@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import SiteHeader from '../components/SiteHeader.astro'
 import SiteNavigation from '../components/SiteNavigation.astro'
 import MemosPage from '../components/MemosPage.astro'
-import SiteFooter from '../components/SiteFooter.astro'
 import { getMemosInfo } from '../lib/memos/index.ts'
 import { getSiteInfo } from '../lib/memos/instance.ts'
 
@@ -14,8 +13,7 @@ const site = await getSiteInfo()
 <BaseLayout title={site.title} description={site.description}>
   <SiteHeader site={site} />
   <SiteNavigation />
-  <main class="mx-auto max-w-[680px] px-4 py-8">
+  <div class="mx-auto max-w-[680px] px-4 py-8">
     <MemosPage memos={info.memos} instanceUrl={info.instanceUrl} nextPageToken={info.nextPageToken} />
-  </main>
-  <SiteFooter />
+  </div>
 </BaseLayout>

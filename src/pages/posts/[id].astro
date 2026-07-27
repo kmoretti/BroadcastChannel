@@ -6,7 +6,6 @@ import SiteHeader from '../../components/SiteHeader.astro'
 import SiteNavigation from '../../components/SiteNavigation.astro'
 import MemoEntry from '../../components/MemoEntry.astro'
 import CreatorAvatar from '../../components/CreatorAvatar.astro'
-import SiteFooter from '../../components/SiteFooter.astro'
 import { getMemoById, getMemoPublicUrl } from '../../lib/memos/index.ts'
 import { getSiteInfo } from '../../lib/memos/instance.ts'
 import { renderMarkdown } from '../../lib/memos/markdown.ts'
@@ -17,16 +16,31 @@ if (!id) {
   return Astro.redirect('/', 302)
 }
 
-const { memo, comments } = await getMemoById(`memos/${id}`)
+let memo
+let comments
+
+try {
+  const result = await getMemoById(`memos/${id}`)
+  memo = result.memo
+  comments = result.comments
+} catch {
+  return new Response('Not Found', { status: 404 })
+}
+
 const site = await getSiteInfo()
 const publicUrl = getMemoPublicUrl(site.instanceUrl, memo.shortId)
 ---
 
-<BaseLayout title={`${memo.snippet.slice(0, 40)} - ${site.title}`} description={memo.snippet}>
+<BaseLayout
+  title={`${memo.snippet.slice(0, 40)} - ${site.title}`}
+  description={memo.snippet}
+  site={site}
+  pageType="post"
+>
   <SiteHeader site={site} />
   <SiteNavigation />
-  <main class="mx-auto max-w-[680px] px-4 py-8">
-    <MemoEntry memo={memo} instanceUrl={site.instanceUrl} showComments={true} />
+  <div class="mx-auto max-w-[680px] px-4 py-8">
+    <MemoEntry memo={memo} instanceUrl={site.instanceUrl} />
 
     <section class="memo-comments mt-10">
       <h2 class="mb-4 text-lg font-bold text-[var(--text)]">评论</h2>
@@ -66,6 +80,5 @@ const publicUrl = getMemoPublicUrl(site.instanceUrl, memo.shortId)
         前往 Memos 原文评论 / 点赞 →
       </a>
     </section>
-  </main>
-  <SiteFooter />
+  </div>
 </BaseLayout>
