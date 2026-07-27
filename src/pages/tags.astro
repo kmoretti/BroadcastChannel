@@ -27,7 +27,7 @@ const site = await getSiteInfo()
       {
         tags.map(([tag, count]) => (
           <a
-            href={`/search/result?q=%23${encodeURIComponent(tag)}`}
+            href={`/search/result?q=${encodeURIComponent(tag)}`}
             class="rounded-full bg-[var(--bg-soft)] px-4 py-2 text-[var(--text)] hover:bg-[var(--bg-mute)]"
           >
             #{tag} <span class="text-[var(--text-muted)]">({count})</span>

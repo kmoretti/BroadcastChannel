@@ -1,9 +1,12 @@
 import type { APIContext } from 'astro'
-import { getSiteInfo } from '../lib/memos/instance.ts'
+import { getSiteInfo, resolveSiteUrl } from '../lib/memos/instance.ts'
 
 export async function GET(context: APIContext) {
   const site = await getSiteInfo()
-  const baseUrl = context.site?.toString() || site.instanceUrl
+  const baseUrl = resolveSiteUrl(context.site, site)
+  const icons = site.avatar
+    ? [{ src: site.avatar, sizes: '192x192', type: 'image/png' }]
+    : [{ src: '/favicon.svg', sizes: '192x192', type: 'image/svg+xml' }]
   return new Response(JSON.stringify({
     name: site.title,
     short_name: site.title,
@@ -11,8 +14,11 @@ export async function GET(context: APIContext) {
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: '#ffffff',
-    icons: site.avatar ? [{ src: site.avatar, sizes: '192x192', type: 'image/png' }] : [],
+    icons,
   }), {
-    headers: { 'Content-Type': 'application/manifest+json' },
+    headers: {
+      'Content-Type': 'application/manifest+json',
+      'Cache-Control': 'public, max-age=3600',
+    },
   })
 }

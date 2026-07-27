@@ -6,7 +6,7 @@ const tagRegex = /(^|\s)#([\u4E00-\u9FA5\w-]+)/g
 
 function transformTags(content: string): string {
   return content.replace(tagRegex, (match, prefix, tag) => {
-    return `${prefix}<a href="/search/result?q=%23${encodeURIComponent(tag)}" class="memo-tag">#${tag}</a>`
+    return `${prefix}<a href="/search/result?q=${encodeURIComponent(tag)}" class="memo-tag">#${tag}</a>`
   })
 }
 

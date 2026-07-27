@@ -10,12 +10,22 @@ import type { FriendLinkResponse } from '../types.ts'
 import { ofetch } from 'ofetch'
 
 const apiUrl = getFriendLinkApiUrl().replace(/\/$/, '')
-const response = await ofetch<FriendLinkResponse>(`${apiUrl}/api/public/friend/?page=1&page_size=100&status=survival`, {
-  headers: { Accept: 'application/json' },
-  retry: 2,
-  timeout: 10000,
-})
-const friends = response.data?.items || []
+let friends: FriendLinkResponse['data']['items'] = []
+
+try {
+  const response = await ofetch<FriendLinkResponse>(
+    `${apiUrl}/api/public/friend/?page=1&page_size=100&status=survival`,
+    {
+      headers: { Accept: 'application/json' },
+      retry: 2,
+      timeout: 10000,
+    },
+  )
+  friends = response.data?.items || []
+} catch {
+  friends = []
+}
+
 const site = await getSiteInfo()
 const applyUrl = getFriendLinkApplyUrl()
 ---

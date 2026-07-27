@@ -20,3 +20,8 @@ export async function getSiteInfo(): Promise<SiteInfo> {
     instanceUrl: profile.instanceUrl,
   }
 }
+
+export function resolveSiteUrl(contextSite: URL | string | undefined, site: SiteInfo): string {
+  const raw = contextSite ? contextSite.toString() : site.instanceUrl
+  return raw.replace(/\/$/, '')
+}

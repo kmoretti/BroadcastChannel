@@ -11,9 +11,10 @@ import { getSiteInfo } from '../../lib/memos/instance.ts'
 const q = Astro.url.searchParams.get('q') || ''
 const info = q ? await getMemosInfo({ q }) : await getMemosInfo()
 const site = await getSiteInfo()
+const searchTitle = q ? `搜索: ${q}` : '搜索'
 ---
 
-<BaseLayout title={`搜索: ${q} - ${site.title}`}>
+<BaseLayout title={`${searchTitle} - ${site.title}`} seo={{ noindex: true }}>
   <Fragment slot="header">
     <SiteHeader site={site} />
     <SiteNavigation />
