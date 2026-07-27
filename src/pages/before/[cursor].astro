@@ -1,14 +1,24 @@
 ---
-import PostsPage from '../../components/PostsPage.astro'
-import { getChannelInfo } from '../../lib/telegram'
-import type { SeoMeta } from '../../types'
+export const prerender = false
 
-const channel = await getChannelInfo({
-  before: Astro.params.cursor,
-})
-const pageSeo: SeoMeta = {
-  noindex: true,
-}
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import SiteHeader from '../../components/SiteHeader.astro'
+import SiteNavigation from '../../components/SiteNavigation.astro'
+import MemosPage from '../../components/MemosPage.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import { getMemosInfo } from '../../lib/memos/index.ts'
+import { getSiteInfo } from '../../lib/memos/instance.ts'
+
+const { cursor } = Astro.params
+const info = await getMemosInfo({ pageToken: cursor })
+const site = await getSiteInfo()
 ---
 
-<PostsPage channel={channel} pageClass="feed" pageHeading={channel.title} pageSeo={pageSeo} pageType="home" />
+<BaseLayout title={`更早的 memo - ${site.title}`}>
+  <SiteHeader site={site} />
+  <SiteNavigation />
+  <main class="mx-auto max-w-[680px] px-4 py-8">
+    <MemosPage memos={info.memos} instanceUrl={info.instanceUrl} nextPageToken={info.nextPageToken} />
+  </main>
+  <SiteFooter />
+</BaseLayout>

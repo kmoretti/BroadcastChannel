@@ -3,13 +3,13 @@ import type { NavItem } from '../types'
 import SearchForm from './SearchForm.astro'
 
 interface Props {
-  currentPathname: string
+  currentPathname?: string
   googleSearchSite?: string
   navs?: NavItem[]
   siteUrl?: string
 }
 
-const { currentPathname, googleSearchSite, navs = [], siteUrl = '' } = Astro.props
+const { currentPathname = Astro.url.pathname, googleSearchSite, navs = [], siteUrl = '' } = Astro.props
 
 const primaryNavItems = [
   { href: `${siteUrl}/`, pathname: `${siteUrl}/`, title: 'Home' },

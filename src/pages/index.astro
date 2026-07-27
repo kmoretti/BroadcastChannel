@@ -1,8 +1,21 @@
 ---
-import PostsPage from '../components/PostsPage.astro'
-import { getChannelInfo } from '../lib/telegram'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import SiteHeader from '../components/SiteHeader.astro'
+import SiteNavigation from '../components/SiteNavigation.astro'
+import MemosPage from '../components/MemosPage.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+import { getMemosInfo } from '../lib/memos/index.ts'
+import { getSiteInfo } from '../lib/memos/instance.ts'
 
-const channel = await getChannelInfo()
+const info = await getMemosInfo()
+const site = await getSiteInfo()
 ---
 
-<PostsPage channel={channel} after={false} pageClass="feed" pageHeading={channel.title} pageType="home" />
+<BaseLayout title={site.title} description={site.description}>
+  <SiteHeader site={site} />
+  <SiteNavigation />
+  <main class="mx-auto max-w-[680px] px-4 py-8">
+    <MemosPage memos={info.memos} instanceUrl={info.instanceUrl} nextPageToken={info.nextPageToken} />
+  </main>
+  <SiteFooter />
+</BaseLayout>

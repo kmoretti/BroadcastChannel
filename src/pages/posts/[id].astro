@@ -1,36 +1,71 @@
 ---
-import PostsPage from '../../components/PostsPage.astro'
-import { getChannelInfo, getChannelPost } from '../../lib/telegram'
+export const prerender = false
 
-const channelInfo = await getChannelInfo()
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import SiteHeader from '../../components/SiteHeader.astro'
+import SiteNavigation from '../../components/SiteNavigation.astro'
+import MemoEntry from '../../components/MemoEntry.astro'
+import CreatorAvatar from '../../components/CreatorAvatar.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import { getMemoById, getMemoPublicUrl } from '../../lib/memos/index.ts'
+import { getSiteInfo } from '../../lib/memos/instance.ts'
+import { renderMarkdown } from '../../lib/memos/markdown.ts'
+import { formatRelativeTime } from '../../lib/post-ui.ts'
 
-if (!Astro.params.id) {
-  return Astro.redirect('/')
+const { id } = Astro.params
+if (!id) {
+  return Astro.redirect('/', 302)
 }
 
-const post = channelInfo.posts.find((item) => item.id === Astro.params.id) ?? (await getChannelPost(Astro.params.id))
-
-if (!post) {
-  return new Response('Not Found', {
-    status: 404,
-    headers: {
-      'Cache-Control': 'public, max-age=300, s-maxage=300',
-    },
-  })
-}
-
-const channel = {
-  ...(channelInfo || {}),
-  posts: [post],
-}
+const { memo, comments } = await getMemoById(`memos/${id}`)
+const site = await getSiteInfo()
+const publicUrl = getMemoPublicUrl(site.instanceUrl, memo.shortId)
 ---
 
-<PostsPage
-  channel={channel}
-  before={false}
-  after={false}
-  isDetail={true}
-  pageHeading={post.title || channel.title}
-  pageSeo={post}
-  pageType="post"
-/>
+<BaseLayout title={`${memo.snippet.slice(0, 40)} - ${site.title}`} description={memo.snippet}>
+  <SiteHeader site={site} />
+  <SiteNavigation />
+  <main class="mx-auto max-w-[680px] px-4 py-8">
+    <MemoEntry memo={memo} instanceUrl={site.instanceUrl} showComments={true} />
+
+    <section class="memo-comments mt-10">
+      <h2 class="mb-4 text-lg font-bold text-[var(--text)]">评论</h2>
+      {
+        comments.length === 0 ? (
+          <p class="text-[var(--text-muted)]">暂无评论</p>
+        ) : (
+          <div class="space-y-4">
+            {comments.map((comment) => (
+              <div class="comment-item flex gap-3 rounded-lg bg-[var(--bg-soft)] p-4">
+                <CreatorAvatar creator={comment.creator} />
+                <div class="flex-1">
+                  <div class="flex items-center gap-2">
+                    <span class="font-medium text-[var(--text)]">
+                      {comment.creator.displayName || comment.creator.username}
+                    </span>
+                    <time class="text-xs text-[var(--text-muted)]" datetime={comment.createTime}>
+                      {formatRelativeTime(comment.createTime)}
+                    </time>
+                  </div>
+                  <div
+                    class="comment-content mt-1 text-sm text-[var(--text)]"
+                    set:html={renderMarkdown(comment.content)}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )
+      }
+      <a
+        href={publicUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-6 inline-block text-sm text-[var(--link)] hover:underline"
+      >
+        前往 Memos 原文评论 / 点赞 →
+      </a>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
