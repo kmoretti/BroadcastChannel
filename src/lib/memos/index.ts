@@ -14,10 +14,15 @@ export async function getMemosInfo(params: { pageToken?: string, q?: string } = 
   return buildMemoInfo(response, instance.instanceUrl)
 }
 
+function normalizeMemoId(id: string): string {
+  return id.replace(/^memos\//, '')
+}
+
 export async function getMemoById(id: string): Promise<{ memo: Memo, comments: MemoComment[] }> {
+  const normalizedId = normalizeMemoId(id)
   const [rawMemo, rawComments] = await Promise.all([
-    cache.getCachedGetMemo(id),
-    cache.getCachedListComments(id, { pageSize: 100 }),
+    cache.getCachedGetMemo(normalizedId),
+    cache.getCachedListComments(normalizedId, { pageSize: 100 }),
   ])
   const memo = parseMemo(rawMemo)
   const comments = (rawComments.memos || []).map(parseComment)
@@ -25,7 +30,7 @@ export async function getMemoById(id: string): Promise<{ memo: Memo, comments: M
 }
 
 export async function getMemoComments(id: string): Promise<MemoComment[]> {
-  const response = await cache.getCachedListComments(id, { pageSize: 100 })
+  const response = await cache.getCachedListComments(normalizeMemoId(id), { pageSize: 100 })
   return (response.memos || []).map(parseComment)
 }
 
