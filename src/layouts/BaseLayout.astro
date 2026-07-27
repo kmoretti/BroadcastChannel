@@ -28,8 +28,8 @@ const hasCustomTitle = Boolean(seo?.title)
 const seoParams = {
   title: seo?.title || title,
   description: seo?.text || description,
-  noindex: seo?.noindex,
-  nofollow: seo?.nofollow,
+  noindex: Boolean(seo?.noindex),
+  nofollow: Boolean(seo?.nofollow),
   openGraph: {
     basic: {
       title: seo?.title || title,

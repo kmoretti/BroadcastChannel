@@ -10,21 +10,26 @@ import { getMemoById, getMemoPublicUrl } from '../../lib/memos/index.ts'
 import { getSiteInfo } from '../../lib/memos/instance.ts'
 import { renderMarkdown } from '../../lib/memos/markdown.ts'
 import { formatRelativeTime } from '../../lib/post-ui.ts'
+import type { Memo, MemoComment } from '../../types.ts'
 
 const { id } = Astro.params
 if (!id) {
   return Astro.redirect('/', 302)
 }
 
-let memo
-let comments
+let memo: Memo
+let comments: MemoComment[]
 
 try {
   const result = await getMemoById(`memos/${id}`)
   memo = result.memo
   comments = result.comments
-} catch {
-  return new Response('Not Found', { status: 404 })
+} catch (error: unknown) {
+  const statusCode = error && typeof error === 'object' && 'statusCode' in error ? Number(error.statusCode) : undefined
+  if (statusCode === 404) {
+    return new Response('Not Found', { status: 404 })
+  }
+  throw error
 }
 
 const site = await getSiteInfo()
