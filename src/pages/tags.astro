@@ -1,17 +1,39 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import DirectorySection from '../components/DirectorySection.astro'
-import { getChannelInfo } from '../lib/telegram'
-import { getEnv, parseCsvList } from '../lib/env'
+import SiteHeader from '../components/SiteHeader.astro'
+import SiteNavigation from '../components/SiteNavigation.astro'
+import { getMemosInfo } from '../lib/memos/index.ts'
+import { getSiteInfo } from '../lib/memos/instance.ts'
 
-const channel = await getChannelInfo()
-const pageSeo = { title: 'Tags' }
-const items = parseCsvList(getEnv(import.meta.env, 'TAGS')).map((tag) => ({
-  href: `/search/result?q=${encodeURIComponent(`#${tag}`)}`,
-  label: tag,
-}))
+const info = await getMemosInfo({ pageSize: 1000 })
+const tagCounts = info.memos.reduce((map, memo) => {
+  for (const tag of memo.tags) {
+    map.set(tag, (map.get(tag) || 0) + 1)
+  }
+  return map
+}, new Map<string, number>())
+const tags = Array.from(tagCounts.entries()).sort((a, b) => b[1] - a[1])
+const site = await getSiteInfo()
 ---
 
-<BaseLayout channel={channel} seo={pageSeo} pageType="page">
-  <DirectorySection id="tags" title="Tags" items={items} />
+<BaseLayout title={`标签 - ${site.title}`}>
+  <Fragment slot="header">
+    <SiteHeader site={site} />
+    <SiteNavigation />
+  </Fragment>
+  <div class="mx-auto max-w-[680px] px-4 py-8">
+    <h1 class="mb-6 text-2xl font-bold text-[var(--text)]">标签</h1>
+    <div class="flex flex-wrap gap-3">
+      {
+        tags.map(([tag, count]) => (
+          <a
+            href={`/search/result?q=%23${encodeURIComponent(tag)}`}
+            class="rounded-full bg-[var(--bg-soft)] px-4 py-2 text-[var(--text)] hover:bg-[var(--bg-mute)]"
+          >
+            #{tag} <span class="text-[var(--text-muted)]">({count})</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
 </BaseLayout>

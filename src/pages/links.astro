@@ -1,25 +1,60 @@
 ---
+export const prerender = false
+
 import BaseLayout from '../layouts/BaseLayout.astro'
-import DirectorySection from '../components/DirectorySection.astro'
-import { getChannelInfo } from '../lib/telegram'
-import { getEnv, parseDelimitedItems } from '../lib/env'
+import SiteHeader from '../components/SiteHeader.astro'
+import SiteNavigation from '../components/SiteNavigation.astro'
+import { getSiteInfo } from '../lib/memos/instance.ts'
+import { getFriendLinkApiUrl, getFriendLinkApplyUrl } from '../lib/env.ts'
+import type { FriendLinkResponse } from '../types.ts'
+import { ofetch } from 'ofetch'
 
-const channel = await getChannelInfo()
-const pageSeo = { title: 'Links' }
-const links = parseDelimitedItems(getEnv(import.meta.env, 'LINKS'))
-
-if (!links.length) {
-  return Astro.redirect('/')
-}
-
-const items = links.map((link) => ({
-  href: link.href,
-  label: link.title,
-  title: link.title,
-  external: true,
-}))
+const apiUrl = getFriendLinkApiUrl().replace(/\/$/, '')
+const response = await ofetch<FriendLinkResponse>(`${apiUrl}/api/public/friend/?page=1&page_size=100&status=survival`, {
+  headers: { Accept: 'application/json' },
+  retry: 2,
+  timeout: 10000,
+})
+const friends = response.data?.items || []
+const site = await getSiteInfo()
+const applyUrl = getFriendLinkApplyUrl()
 ---
 
-<BaseLayout channel={channel} seo={pageSeo} pageType="page">
-  <DirectorySection id="links" title="Links" items={items} />
+<BaseLayout title={`友链 - ${site.title}`}>
+  <Fragment slot="header">
+    <SiteHeader site={site} />
+    <SiteNavigation />
+  </Fragment>
+  <div class="mx-auto max-w-[680px] px-4 py-8">
+    <h1 class="mb-6 text-2xl font-bold text-[var(--text)]">友情链接</h1>
+    <div class="friend-links grid gap-4 sm:grid-cols-2">
+      {
+        friends.map((friend) => (
+          <a
+            href={friend.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="friend-link-card flex items-center gap-3 rounded-lg border border-[var(--border)] p-4 hover:bg-[var(--bg-soft)]"
+          >
+            {friend.avatar && (
+              <img src={friend.avatar} alt={friend.name} class="h-12 w-12 rounded-full object-cover" loading="lazy" />
+            )}
+            <div class="min-w-0 flex-1">
+              <div class="font-medium text-[var(--text)]">{friend.name}</div>
+              {friend.description && <div class="truncate text-sm text-[var(--text-muted)]">{friend.description}</div>}
+            </div>
+          </a>
+        ))
+      }
+    </div>
+    {
+      applyUrl && (
+        <div class="mt-8">
+          <a href={applyUrl} target="_blank" rel="noopener noreferrer" class="text-[var(--link)] hover:underline">
+            申请友链 →
+          </a>
+        </div>
+      )
+    }
+  </div>
 </BaseLayout>

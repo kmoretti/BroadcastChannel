@@ -1,59 +1,18 @@
-import type { APIRoute } from 'astro'
-import { getStaticProxy } from '../lib/env'
-import { getChannelInfo } from '../lib/telegram'
+import type { APIContext } from 'astro'
+import { getSiteInfo } from '../lib/memos/instance.ts'
 
-const MANIFEST_THEME_COLOR = '#ffffff'
-const FALLBACK_MANIFEST_NAME = 'BroadcastChannel'
-
-export const GET: APIRoute = async (context) => {
-  const { SITE_URL } = context.locals
-  const channel = await getChannelInfo()
-  const absoluteSiteUrl = SITE_URL.startsWith('http') ? SITE_URL : new URL(SITE_URL, context.url.origin).toString()
-  const staticProxy = getStaticProxy(import.meta.env)
-  const siteName = channel.title || FALLBACK_MANIFEST_NAME
-  const avatarIcon = channel.avatar?.startsWith('http')
-    ? new URL(`${staticProxy}${channel.avatar}`, absoluteSiteUrl).toString()
-    : null
-
-  const manifest = {
-    name: siteName,
-    short_name: siteName,
-    icons: avatarIcon
-      ? [
-          {
-            src: avatarIcon,
-            sizes: '192x192',
-            purpose: 'any maskable',
-          },
-          {
-            src: avatarIcon,
-            sizes: '512x512',
-            purpose: 'any maskable',
-          },
-        ]
-      : [
-          {
-            src: 'favicon.svg',
-            sizes: 'any',
-            type: 'image/svg+xml',
-            purpose: 'any',
-          },
-          {
-            src: 'favicon.ico',
-            sizes: '16x16 32x32 48x48',
-            type: 'image/x-icon',
-            purpose: 'any',
-          },
-        ],
-    theme_color: MANIFEST_THEME_COLOR,
-    background_color: MANIFEST_THEME_COLOR,
+export async function GET(context: APIContext) {
+  const site = await getSiteInfo()
+  const baseUrl = context.site?.toString() || site.instanceUrl
+  return new Response(JSON.stringify({
+    name: site.title,
+    short_name: site.title,
+    start_url: baseUrl,
     display: 'standalone',
-  }
-
-  return new Response(JSON.stringify(manifest, null, 2), {
-    headers: {
-      'Content-Type': 'application/manifest+json; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600',
-    },
+    background_color: '#ffffff',
+    theme_color: '#ffffff',
+    icons: site.avatar ? [{ src: site.avatar, sizes: '192x192', type: 'image/png' }] : [],
+  }), {
+    headers: { 'Content-Type': 'application/manifest+json' },
   })
 }

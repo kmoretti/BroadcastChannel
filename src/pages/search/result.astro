@@ -1,24 +1,29 @@
 ---
-import PostsPage from '../../components/PostsPage.astro'
-import { getChannelInfo } from '../../lib/telegram'
-import type { SeoMeta } from '../../types'
+export const prerender = false
+
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import SiteHeader from '../../components/SiteHeader.astro'
+import SiteNavigation from '../../components/SiteNavigation.astro'
+import MemosPage from '../../components/MemosPage.astro'
+import { getMemosInfo } from '../../lib/memos/index.ts'
+import { getSiteInfo } from '../../lib/memos/instance.ts'
 
 const q = Astro.url.searchParams.get('q') || ''
-const channel = await getChannelInfo({
-  q,
-})
-const pageSeo: SeoMeta = {
-  title: q,
-  noindex: true,
-}
+const info = q ? await getMemosInfo({ q }) : await getMemosInfo()
+const site = await getSiteInfo()
 ---
 
-<PostsPage
-  channel={channel}
-  before={false}
-  after={false}
-  pageClass="feed"
-  pageHeading={`Search: ${q}`}
-  pageSeo={pageSeo}
-  pageType="page"
-/>
+<BaseLayout title={`搜索: ${q} - ${site.title}`}>
+  <Fragment slot="header">
+    <SiteHeader site={site} />
+    <SiteNavigation />
+  </Fragment>
+  <div class="mx-auto max-w-[680px] px-4 py-8">
+    <MemosPage
+      memos={info.memos}
+      instanceUrl={info.instanceUrl}
+      nextPageToken={info.nextPageToken}
+      title={q ? `搜索: ${q}` : undefined}
+    />
+  </div>
+</BaseLayout>

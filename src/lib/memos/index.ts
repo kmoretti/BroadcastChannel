@@ -4,8 +4,8 @@ import * as cache from './cache.ts'
 import { buildMemoInfo, parseComment, parseMemo } from './parse.ts'
 import { formatFileSize, getMemoPublicUrl, getOpenStreetMapUrl, groupAttachments } from './render.ts'
 
-export async function getMemosInfo(params: { pageToken?: string, q?: string } = {}): Promise<MemoInfo> {
-  const pageSize = getMemosPageSize()
+export async function getMemosInfo(params: { pageSize?: number, pageToken?: string, q?: string } = {}): Promise<MemoInfo> {
+  const pageSize = params.pageSize ?? getMemosPageSize()
   const instance = await cache.getCachedInstanceProfile()
   const queryParams = { pageSize, pageToken: params.pageToken }
   const response = params.q
