@@ -18,6 +18,7 @@ declare module 'sanitize-html' {
   export interface SanitizeHtmlOptions {
     allowedTags?: string[]
     allowedAttributes?: Record<string, string[]>
+    allowedClasses?: Record<string, string[]>
     exclusiveFilter?: (frame: SanitizeHtmlFrame) => boolean
   }
 

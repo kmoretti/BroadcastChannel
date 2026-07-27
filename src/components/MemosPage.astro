@@ -1,0 +1,35 @@
+---
+import type { Memo } from '../types.ts'
+import MemoEntry from './MemoEntry.astro'
+
+interface Props {
+  memos: Memo[]
+  instanceUrl: string
+  nextPageToken?: string
+  title?: string
+}
+
+const { memos, instanceUrl, nextPageToken, title } = Astro.props
+---
+
+<div class="memos-page">
+  {title && <h1 class="mb-6 text-2xl font-bold text-[var(--text)]">{title}</h1>}
+  <div class="memos-list space-y-8">
+    {memos.map((memo) => <MemoEntry memo={memo} instanceUrl={instanceUrl} />)}
+  </div>
+
+  <nav class="memo-pagination mt-10 flex justify-between">
+    {
+      nextPageToken ? (
+        <a
+          href={`/before/${nextPageToken}`}
+          class="rounded-lg bg-[var(--bg-soft)] px-4 py-2 text-[var(--text)] hover:bg-[var(--bg-mute)]"
+        >
+          下一页 →
+        </a>
+      ) : (
+        <span class="text-[var(--text-muted)]">已经到底了</span>
+      )
+    }
+  </nav>
+</div>

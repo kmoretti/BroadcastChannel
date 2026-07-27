@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { formatPostTime, paidReactionClass } from './post-ui'
+import { formatPostTime } from './post-ui'
 
 describe('post UI helpers', () => {
   beforeEach(() => {
@@ -21,9 +21,5 @@ describe('post UI helpers', () => {
 
   it('falls back to english for invalid locales', () => {
     expect(formatPostTime('2020-01-02T03:04:05.000Z', 'UTC', 'unknown-locale')).toBe('03:04 · Jan 2, 2020 · Thu')
-  })
-
-  it('exposes a stable semantic class for paid reactions', () => {
-    expect(paidReactionClass).toBe('reaction-paid')
   })
 })

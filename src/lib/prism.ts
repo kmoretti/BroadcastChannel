@@ -1,4 +1,6 @@
-import prism from 'prismjs'
+import flourite from 'flourite'
+import Prism from 'prismjs'
+import 'prismjs-components-importer/esm'
 
 type LanguageLoader = () => Promise<unknown>
 
@@ -35,7 +37,7 @@ const loadedLanguages = new Set(['markup', 'css', 'clike', 'javascript'])
 export async function ensurePrismLanguage(language: string): Promise<string> {
   const normalizedLanguage = language.toLowerCase()
 
-  if (loadedLanguages.has(normalizedLanguage) || prism.languages[normalizedLanguage]) {
+  if (loadedLanguages.has(normalizedLanguage) || Prism.languages[normalizedLanguage]) {
     return normalizedLanguage
   }
 
@@ -47,7 +49,13 @@ export async function ensurePrismLanguage(language: string): Promise<string> {
 
   await loadLanguage()
   loadedLanguages.add(normalizedLanguage)
-  return prism.languages[normalizedLanguage] ? normalizedLanguage : 'text'
+  return Prism.languages[normalizedLanguage] ? normalizedLanguage : 'text'
 }
 
-export default prism
+export function highlightCode(code: string, lang: string): string {
+  const detected = lang === 'text' ? flourite(code).language : lang
+  const language = Prism.languages[detected] ? detected : 'text'
+  return Prism.highlight(code, Prism.languages[language] || Prism.languages.text, language)
+}
+
+export default Prism

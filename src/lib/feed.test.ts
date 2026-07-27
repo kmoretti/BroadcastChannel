@@ -1,50 +1,88 @@
-import type { ChannelInfo, Post } from '../types'
+import type { Memo, MemoInfo } from '../types.ts'
 import { describe, expect, it } from 'vitest'
-import { buildJsonFeed } from './feed'
+import { buildFeedMemos } from './feed.ts'
 
-describe('json feed builder', () => {
-  it('emits JSON Feed 1.1 metadata and valid item fields', () => {
-    const channel: ChannelInfo = {
-      posts: [],
-      title: 'Channel title',
-      description: 'Channel description',
-      descriptionHTML: null,
-      avatar: undefined,
-    }
-    const posts: Post[] = [{
-      id: '123',
-      title: 'Post title',
-      type: 'text',
-      datetime: '2026-01-02T03:04:05.000Z',
+describe('feed memo builder', () => {
+  it('maps memos to feed entries', () => {
+    const memos: Memo[] = [{
+      id: 'memo-1',
+      shortId: 'abc123',
+      state: 'NORMAL',
+      creator: {
+        name: 'user',
+        username: 'user',
+      },
+      createTime: '2026-01-02T03:04:05.000Z',
+      updateTime: '2026-01-02T03:04:05.000Z',
+      content: 'Hello world',
+      html: '<p>Hello world</p>',
+      visibility: 'PUBLIC',
       tags: ['tag'],
-      text: 'Post text',
-      description: 'Post summary',
-      content: '<p>Hello</p><pre class="code"><code class="language-js"><span class="token keyword">const</span></code></pre><script>alert(1)</script>',
+      pinned: false,
+      attachments: [],
       reactions: [],
+      property: {
+        hasLink: false,
+        hasTaskList: false,
+        hasCode: false,
+        hasIncompleteTasks: false,
+        title: 'Memo title',
+      },
+      snippet: 'Hello world',
     }]
 
-    const feed = buildJsonFeed({
-      channel,
-      posts,
-      siteUrl: new URL('https://example.com/blog/'),
-      title: 'Feed title',
-    })
+    const info: MemoInfo = {
+      memos,
+      instanceUrl: 'https://memos.example/',
+    }
 
-    expect(feed).toMatchObject({
-      version: 'https://jsonfeed.org/version/1.1',
-      title: 'Feed title',
-      home_page_url: 'https://example.com/blog/',
-      feed_url: 'https://example.com/blog/rss.json',
+    const feed = buildFeedMemos(info)
+
+    expect(feed).toHaveLength(1)
+    expect(feed[0]).toMatchObject({
+      id: 'memo-1',
+      title: 'Memo title',
+      link: 'https://memos.example/m/abc123',
+      content: '<p>Hello world</p>',
+      snippet: 'Hello world',
     })
-    expect(feed.items).toHaveLength(1)
-    expect(feed.items[0]).toMatchObject({
-      id: 'https://example.com/blog/posts/123',
-      url: 'https://example.com/blog/posts/123',
-      title: 'Post title',
-      summary: 'Post summary',
-      tags: ['tag'],
-      content_html: '<p>Hello</p><pre class="code"><code class="language-js"><span class="token keyword">const</span></code></pre>',
-    })
-    expect(typeof feed.items[0]?.date_published).toBe('string')
+    expect(feed[0]?.pubDate).toEqual(new Date('2026-01-02T03:04:05.000Z'))
+  })
+
+  it('falls back to snippet and short id for title', () => {
+    const memos: Memo[] = [{
+      id: 'memo-2',
+      shortId: 'def456',
+      state: 'NORMAL',
+      creator: {
+        name: 'user',
+        username: 'user',
+      },
+      createTime: '2026-01-02T03:04:05.000Z',
+      updateTime: '2026-01-02T03:04:05.000Z',
+      content: '',
+      html: '',
+      visibility: 'PUBLIC',
+      tags: [],
+      pinned: false,
+      attachments: [],
+      reactions: [],
+      property: {
+        hasLink: false,
+        hasTaskList: false,
+        hasCode: false,
+        hasIncompleteTasks: false,
+      },
+      snippet: '',
+    }]
+
+    const info: MemoInfo = {
+      memos,
+      instanceUrl: 'https://memos.example/',
+    }
+
+    const feed = buildFeedMemos(info)
+
+    expect(feed[0]?.title).toBe('Memo def456')
   })
 })

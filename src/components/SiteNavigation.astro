@@ -2,49 +2,21 @@
 import type { NavItem } from '../types'
 import SearchForm from './SearchForm.astro'
 
-const {
-  channelTitle,
-  currentPathname,
-  googleSearchSite,
-  linksPathname,
-  navs = [],
-  searchAction,
-  showLinks,
-  showTags,
-  siteRootPathname,
-  siteUrl,
-  tagsPathname,
-} = Astro.props as {
-  channelTitle?: string
+interface Props {
   currentPathname: string
   googleSearchSite?: string
-  linksPathname: string
   navs?: NavItem[]
-  searchAction: string
-  showLinks?: boolean
-  showTags?: boolean
-  siteRootPathname: string
-  siteUrl: string
-  tagsPathname: string
+  siteUrl?: string
 }
 
+const { currentPathname, googleSearchSite, navs = [], siteUrl = '' } = Astro.props
+
 const primaryNavItems = [
-  {
-    href: siteUrl,
-    pathname: siteRootPathname,
-    title: 'Home',
-  },
-  showTags && {
-    href: `${siteUrl}tags`,
-    pathname: tagsPathname,
-    title: 'Tags',
-  },
-  showLinks && {
-    href: `${siteUrl}links`,
-    pathname: linksPathname,
-    title: 'Links',
-  },
-].filter((item): item is { href: string; pathname: string; title: string } => Boolean(item))
+  { href: `${siteUrl}/`, pathname: `${siteUrl}/`, title: 'Home' },
+  { href: `${siteUrl}/tags`, pathname: `${siteUrl}/tags`, title: 'Tags' },
+  { href: `${siteUrl}/links`, pathname: `${siteUrl}/links`, title: 'Links' },
+  { href: `${siteUrl}/rss.xml`, pathname: `${siteUrl}/rss.xml`, title: 'RSS' },
+]
 ---
 
 <nav class="site-navigation" aria-label="Primary navigation">
@@ -52,11 +24,7 @@ const primaryNavItems = [
     {
       primaryNavItems.map((nav) => (
         <li>
-          <a
-            href={nav.href}
-            title={nav.title === 'Home' ? channelTitle : nav.title}
-            aria-current={currentPathname === nav.pathname ? 'page' : undefined}
-          >
+          <a href={nav.href} title={nav.title} aria-current={currentPathname === nav.pathname ? 'page' : undefined}>
             {nav.title}
           </a>
         </li>
@@ -72,5 +40,5 @@ const primaryNavItems = [
       ))
     }
   </ul>
-  <SearchForm action={searchAction} googleSearchSite={googleSearchSite} />
+  <SearchForm action="/search/result" googleSearchSite={googleSearchSite} />
 </nav>

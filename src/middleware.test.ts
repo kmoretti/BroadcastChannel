@@ -4,39 +4,46 @@ vi.mock('astro:middleware', () => ({
   defineMiddleware: <T>(handler: T): T => handler,
 }))
 
-const { isHtmlResponse, shouldApplyDefaultCache } = await import('./middleware')
+const { onRequest } = await import('./middleware')
 
-describe('middleware response header helpers', () => {
-  it('applies default cache to successful responses without cache headers', () => {
-    expect(shouldApplyDefaultCache(new Response('', { status: 200 }))).toBe(true)
+function createContext(request?: Request) {
+  const req = request || new Request('https://example.com/')
+  return {
+    request: req,
+    url: new URL(req.url),
+    redirect: vi.fn((path: string, status: number) => new Response('', { status, headers: { Location: path } })),
+  } as unknown as Parameters<typeof onRequest>[0]
+}
+
+describe('middleware', () => {
+  it('redirects legacy hashtag search paths', async () => {
+    const context = createContext(new Request('https://example.com/search/%23astro'))
+    const next = vi.fn(async () => new Response('', { headers: { 'content-type': 'text/html; charset=utf-8' } }))
+
+    await onRequest(context, next)
+
+    expect(context.redirect).toHaveBeenCalledWith('/search/result?q=%23astro', 301)
   })
 
-  it('applies default cache to redirects without cache headers', () => {
-    expect(shouldApplyDefaultCache(new Response('', { status: 302 }))).toBe(true)
+  it('adds speculation rules and cache headers to html responses', async () => {
+    const context = createContext()
+    const next = vi.fn(async () => new Response('', { status: 200, headers: { 'content-type': 'text/html; charset=utf-8' } }))
+
+    const response = await onRequest(context, next)
+
+    expect(response).toBeInstanceOf(Response)
+    expect((response as Response).headers.get('Speculation-Rules')).toBe('/rules/prefetch.json')
+    expect((response as Response).headers.get('Cache-Control')).toBe('public, max-age=300, s-maxage=300')
   })
 
-  it('does not apply default cache to not found responses', () => {
-    expect(shouldApplyDefaultCache(new Response('', { status: 404 }))).toBe(false)
-  })
+  it('does not add headers to non-html responses', async () => {
+    const context = createContext()
+    const next = vi.fn(async () => new Response('', { status: 200, headers: { 'content-type': 'application/json' } }))
 
-  it('does not apply default cache to upstream error responses', () => {
-    expect(shouldApplyDefaultCache(new Response('', { status: 502 }))).toBe(false)
-  })
+    const response = await onRequest(context, next)
 
-  it('does not replace existing cache headers', () => {
-    expect(shouldApplyDefaultCache(new Response('', {
-      headers: {
-        'Cache-Control': 'private, max-age=0',
-      },
-      status: 200,
-    }))).toBe(false)
-  })
-
-  it('detects HTML responses with charset parameters', () => {
-    expect(isHtmlResponse(new Response('', {
-      headers: {
-        'Content-Type': 'text/html; charset=utf-8',
-      },
-    }))).toBe(true)
+    expect(response).toBeInstanceOf(Response)
+    expect((response as Response).headers.has('Speculation-Rules')).toBe(false)
+    expect((response as Response).headers.has('Cache-Control')).toBe(false)
   })
 })

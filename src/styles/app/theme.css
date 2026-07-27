@@ -53,6 +53,16 @@
     --back-to-top-offset: 1.25rem;
     --icon-hover-filter: grayscale(1) opacity(0.8);
     --icon-secondary-filter: grayscale(1) opacity(0.5);
+
+    --bg: #ffffff;
+    --bg-soft: #f5f5f5;
+    --bg-mute: #eeeeee;
+    --text: #1a1a1a;
+    --text-muted: #666666;
+    --text-subtle: #999999;
+    --link: #576b95;
+    --border: #e5e5e5;
+    --shadow: rgba(0, 0, 0, 0.1);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -69,5 +79,17 @@
       --reaction-paid-border-color: color-mix(in srgb, var(--reaction-paid-color) 52%, transparent);
       --reaction-paid-background-color: color-mix(in srgb, var(--reaction-paid-color) 14%, var(--background-color));
     }
+  }
+
+  html.dark {
+    --bg: #0a0a0a;
+    --bg-soft: #111111;
+    --bg-mute: #1a1a1a;
+    --text: #ffffff;
+    --text-muted: #999999;
+    --text-subtle: #666666;
+    --link: #7c9bd6;
+    --border: #2a2a2a;
+    --shadow: rgba(0, 0, 0, 0.5);
   }
 }

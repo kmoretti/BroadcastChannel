@@ -1,0 +1,27 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { MemoCreator } from '../types.ts'
+
+interface Props {
+  creator: MemoCreator
+}
+
+const { creator } = Astro.props
+---
+
+<div
+  class="creator-avatar flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[var(--bg-mute)]"
+>
+  {
+    creator.avatarUrl ? (
+      <img
+        src={creator.avatarUrl}
+        alt={creator.displayName || creator.username}
+        class="h-full w-full object-cover"
+        loading="lazy"
+      />
+    ) : (
+      <Icon name="ri:user-line" class="h-6 w-6 text-[var(--text-muted)]" />
+    )
+  }
+</div>

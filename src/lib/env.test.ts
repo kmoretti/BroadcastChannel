@@ -2,9 +2,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   getBooleanEnv,
   getEnv,
-  getStaticProxy,
-  getTargetWhitelist,
-  getTelegramHost,
+  getFriendLinkApiUrl,
+  getMemosApiUrl,
+  getMemosCreators,
+  getMemosPageSize,
   parseCsvList,
   parseDelimitedItems,
 } from './env'
@@ -46,24 +47,6 @@ describe('getEnv', () => {
   })
 })
 
-describe('getStaticProxy', () => {
-  afterEach(() => {
-    vi.unstubAllEnvs()
-  })
-
-  it('defaults to /static/ when unset', () => {
-    vi.stubEnv('STATIC_PROXY', undefined)
-
-    expect(getStaticProxy({})).toBe('/static/')
-  })
-
-  it('preserves an explicitly empty value', () => {
-    vi.stubEnv('STATIC_PROXY', '')
-
-    expect(getStaticProxy({})).toBe('')
-  })
-})
-
 describe('getBooleanEnv', () => {
   afterEach(() => {
     vi.unstubAllEnvs()
@@ -88,59 +71,59 @@ describe('getBooleanEnv', () => {
   })
 })
 
-describe('getTelegramHost', () => {
-  afterEach(() => {
-    vi.unstubAllEnvs()
+describe('getMemosApiUrl', () => {
+  it('defaults to https://mm.2005815.xyz/api/v1', () => {
+    expect(getMemosApiUrl({})).toBe('https://mm.2005815.xyz/api/v1')
   })
 
-  it('defaults to telegram.me', () => {
-    vi.stubEnv('TELEGRAM_HOST', undefined)
-
-    expect(getTelegramHost({})).toBe('telegram.me')
-  })
-
-  it('uses the configured host', () => {
-    vi.stubEnv('TELEGRAM_HOST', 'telegram.dog')
-
-    expect(getTelegramHost({})).toBe('telegram.dog')
+  it('uses the env override', () => {
+    expect(getMemosApiUrl({ MEMOS_API_URL: 'https://custom.example/api/v1' })).toBe(
+      'https://custom.example/api/v1',
+    )
   })
 })
 
-describe('getTargetWhitelist', () => {
-  afterEach(() => {
-    vi.unstubAllEnvs()
+describe('getMemosCreators', () => {
+  it('defaults to an empty array', () => {
+    expect(getMemosCreators({})).toEqual([])
   })
 
-  it('returns no additions when unset', () => {
-    vi.stubEnv('TARGET_WHITELIST', undefined)
-
-    expect(getTargetWhitelist({})).toEqual([])
-  })
-
-  it('returns no additions when the environment object is unavailable', () => {
-    vi.stubEnv('TARGET_WHITELIST', undefined)
-
-    expect(() => getTargetWhitelist(undefined)).not.toThrow()
-    expect(getTargetWhitelist(undefined)).toEqual([])
-  })
-
-  it('prefers the runtime value and normalizes hostnames', () => {
-    vi.stubEnv('TARGET_WHITELIST', ' A.com, b.COM, a.com, sub.Example.com ')
-
-    expect(getTargetWhitelist({ TARGET_WHITELIST: 'build.example' })).toEqual([
-      'a.com',
-      'b.com',
-      'sub.example.com',
+  it('splits a comma-separated string and trims entries', () => {
+    expect(getMemosCreators({ MEMOS_CREATORS: 'alice, bob,, charlie ' })).toEqual([
+      'alice',
+      'bob',
+      'charlie',
     ])
   })
+})
 
-  it('ignores values that are not DNS hostnames', () => {
-    vi.stubEnv(
-      'TARGET_WHITELIST',
-      'https://a.com,a.com:443,a.com/path,a.com?x=1,a.com#x,*.a.com,127.0.0.1,::1,localhost',
+describe('getMemosPageSize', () => {
+  it('defaults to 20', () => {
+    expect(getMemosPageSize({})).toBe(20)
+  })
+
+  it('uses the env override', () => {
+    expect(getMemosPageSize({ MEMOS_PAGE_SIZE: '50' })).toBe(50)
+  })
+
+  it.each([
+    ['abc'],
+    ['0'],
+    ['-5'],
+  ])('falls back to 20 for invalid value %j', (value) => {
+    expect(getMemosPageSize({ MEMOS_PAGE_SIZE: value })).toBe(20)
+  })
+})
+
+describe('getFriendLinkApiUrl', () => {
+  it('defaults to https://blog-api.2005815.xyz/', () => {
+    expect(getFriendLinkApiUrl({})).toBe('https://blog-api.2005815.xyz/')
+  })
+
+  it('uses the env override', () => {
+    expect(getFriendLinkApiUrl({ FRIEND_LINK_API_URL: 'https://links.example/' })).toBe(
+      'https://links.example/',
     )
-
-    expect(getTargetWhitelist({})).toEqual([])
   })
 })
 

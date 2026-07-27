@@ -1,0 +1,38 @@
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<button
+  id="theme-toggle"
+  aria-label="切换主题"
+  class="fixed bottom-20 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[var(--bg)] text-[var(--text)] shadow-lg border border-[var(--border)] md:bottom-24 md:right-6"
+>
+  <span class="theme-icon-light"><Icon name="ri:sun-line" class="h-6 w-6" /></span>
+  <span class="theme-icon-dark hidden"><Icon name="ri:moon-line" class="h-6 w-6" /></span>
+</button>
+
+<script is:inline>
+  ;(function () {
+    const root = document.documentElement
+    const toggle = document.getElementById('theme-toggle')
+    const lightIcon = toggle?.querySelector('.theme-icon-light')
+    const darkIcon = toggle?.querySelector('.theme-icon-dark')
+    const stored = localStorage.getItem('theme')
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isDark = stored ? stored === 'dark' : systemDark
+
+    function applyTheme(dark) {
+      root.classList.toggle('dark', dark)
+      lightIcon?.classList.toggle('hidden', dark)
+      darkIcon?.classList.toggle('hidden', !dark)
+    }
+
+    applyTheme(isDark)
+
+    toggle?.addEventListener('click', () => {
+      const dark = !root.classList.contains('dark')
+      applyTheme(dark)
+      localStorage.setItem('theme', dark ? 'dark' : 'light')
+    })
+  })()
+</script>

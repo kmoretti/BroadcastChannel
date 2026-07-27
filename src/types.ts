@@ -1,29 +1,95 @@
-export interface Reaction {
-  emoji: string
-  emojiId?: string
-  emojiImage?: string
-  count: string
-  isPaid: boolean
+export interface MemoCreator {
+  name: string
+  username: string
+  displayName?: string
+  avatarUrl?: string
 }
 
-export interface Post {
+export interface MemoAttachment {
+  name: string
+  filename: string
+  externalLink: string
+  type: string
+  size: string
+}
+
+export interface MemoReaction {
+  reactionType: string
+  count: number
+}
+
+export interface MemoLocation {
+  placeholder: string
+  latitude: number
+  longitude: number
+}
+
+export interface Memo {
   id: string
-  title: string
-  type: 'text' | 'service'
-  datetime: string
-  tags: string[]
-  text: string
-  description?: string
+  shortId: string
+  state: string
+  creator: MemoCreator
+  createTime: string
+  updateTime: string
   content: string
-  reactions: Reaction[]
+  html: string
+  visibility: string
+  tags: string[]
+  pinned: boolean
+  attachments: MemoAttachment[]
+  reactions: MemoReaction[]
+  location?: MemoLocation
+  property: {
+    hasLink: boolean
+    hasTaskList: boolean
+    hasCode: boolean
+    hasIncompleteTasks: boolean
+    title?: string
+  }
+  snippet: string
 }
 
-export interface ChannelInfo {
-  posts: Post[]
-  title: string
+export interface MemoComment extends Memo {
+  parent: string
+}
+
+export interface MemoInfo {
+  memos: Memo[]
+  instanceUrl: string
+  title?: string
+  description?: string
+  avatar?: string
+  nextPageToken?: string
+}
+
+export interface FriendLink {
+  id: number
+  name: string
+  link: string
+  avatar: string
   description: string
-  descriptionHTML: string | null
-  avatar: string | undefined
+  status: string
+  enableRss: boolean
+  updatedAt: number
+  snapshot?: string
+  friendLinkPage?: string
+  feed?: string
+}
+
+export interface FriendLinkResponse {
+  code: number
+  message: string
+  data: {
+    items: FriendLink[]
+    total: number
+    page: number
+    page_size: number
+  }
+}
+
+export interface NavItem {
+  title: string
+  href: string
 }
 
 export interface SeoMeta {
@@ -31,16 +97,4 @@ export interface SeoMeta {
   text?: string
   noindex?: string | boolean
   nofollow?: string | boolean
-}
-
-/** Parameters accepted by getChannelInfo */
-export interface GetChannelInfoParams {
-  before?: string
-  after?: string
-  q?: string
-}
-
-export interface NavItem {
-  title: string
-  href: string
 }

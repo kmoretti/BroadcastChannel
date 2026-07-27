@@ -5,6 +5,7 @@ import BackToTop from '../components/BackToTop.astro'
 import SiteHeader from '../components/SiteHeader.astro'
 import SiteNavigation from '../components/SiteNavigation.astro'
 import SiteFooter from '../components/SiteFooter.astro'
+import ThemeToggle from '../components/ThemeToggle.astro'
 import { getEnv, parseDelimitedItems } from '../lib/env'
 import { getPageSeo } from '../lib/seo'
 import type { ChannelInfo, SeoMeta } from '../types'
@@ -56,6 +57,15 @@ const skipLinkText = 'Skip to main content'
       }}
       {...seoParams}
     />
+    <script is:inline>
+      ;(function () {
+        const stored = localStorage.getItem('theme')
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (stored ? stored === 'dark' : systemDark) {
+          document.documentElement.classList.add('dark')
+        }
+      })()
+    </script>
     <Fragment set:html={HEADER_INJECT} />
   </head>
 
@@ -81,6 +91,7 @@ const skipLinkText = 'Skip to main content'
     </main>
     <SiteFooter />
     <BackToTop />
+    <ThemeToggle />
     <Fragment set:html={FOOTER_INJECT} />
   </body>
 </html>

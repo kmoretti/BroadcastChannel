@@ -1,7 +1,3 @@
-import type { Reaction } from '../types'
-
-export const paidReactionClass = 'reaction-paid'
-
 const weekInMs = 7 * 24 * 60 * 60 * 1000
 
 function resolveLocale(locale = 'en'): string {
@@ -17,7 +13,7 @@ function roundRelativeTime(diffInMs: number, unitInMs: number): number {
   return Math.sign(diffInMs) * Math.round(Math.abs(diffInMs) / unitInMs)
 }
 
-function formatRelativeTime(date: Date, locale: string): string {
+function formatRelativeTimeWithLocale(date: Date, locale: string): string {
   const diffInMs = date.getTime() - Date.now()
   const absoluteDiffInMs = Math.abs(diffInMs)
   const formatter = new Intl.RelativeTimeFormat(locale, { numeric: 'always' })
@@ -63,15 +59,29 @@ export function formatPostTime(datetime: string, timezone?: string, locale?: str
 
   return isOlderThanWeek
     ? formatAbsoluteTime(postTime, timezone, resolvedLocale)
-    : formatRelativeTime(postTime, resolvedLocale)
+    : formatRelativeTimeWithLocale(postTime, resolvedLocale)
 }
 
 export function getTagHref(tag: string): string {
   return `/search/result?q=${encodeURIComponent(`#${tag}`)}`
 }
 
-export function getReactionLabel(reaction: Reaction): string {
-  const reactionName = reaction.isPaid ? 'Paid reaction' : `${reaction.emoji || 'Custom emoji'} reaction`
+export function formatRelativeTime(iso: string): string {
+  const date = new Date(iso)
+  const now = new Date()
+  const diff = now.getTime() - date.getTime()
+  const seconds = Math.floor(diff / 1000)
+  const minutes = Math.floor(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+  const days = Math.floor(hours / 24)
 
-  return `${reactionName}, count ${reaction.count}`
+  if (seconds < 60)
+    return '刚刚'
+  if (minutes < 60)
+    return `${minutes}分钟前`
+  if (hours < 24)
+    return `${hours}小时前`
+  if (days < 30)
+    return `${days}天前`
+  return date.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })
 }
