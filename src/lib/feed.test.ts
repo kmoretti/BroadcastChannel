@@ -42,7 +42,7 @@ describe('feed memo builder', () => {
     expect(feed[0]).toMatchObject({
       id: 'memo-1',
       title: 'Memo title',
-      link: 'https://memos.example/m/abc123',
+      link: 'https://memos.example/posts/abc123',
       content: '<p>Hello world</p>',
       snippet: 'Hello world',
     })

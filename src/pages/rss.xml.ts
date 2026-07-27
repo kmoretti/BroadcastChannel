@@ -8,7 +8,7 @@ export async function GET(context: APIContext) {
   const [info, site] = await Promise.all([getMemosInfo({ pageSize: 50 }), getSiteInfo()])
   const siteUrl = resolveSiteUrl(context.site, site)
   const items = buildFeedMemos(info, siteUrl)
-  const response = rss({
+  const response = await rss({
     title: site.title,
     description: site.description,
     site: siteUrl,
