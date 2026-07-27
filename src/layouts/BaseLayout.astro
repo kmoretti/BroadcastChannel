@@ -8,7 +8,7 @@ import { getEnv } from '../lib/env'
 import type { SiteInfo } from '../lib/memos/instance.ts'
 import type { SeoMeta } from '../types'
 
-const { SITE_URL, RSS_URL, RSS_PREFIX } = Astro.locals
+const { RSS_URL, RSS_PREFIX } = Astro.locals
 
 interface Props {
   title: string
@@ -79,6 +79,7 @@ const skipLinkText = 'Skip to main content'
 
   <body class:list={[pageType, pageClass]}>
     <a href="#main-content" class="skip-link">{skipLinkText}</a>
+    <slot name="header" />
     <main id="main-content">
       <slot />
     </main>

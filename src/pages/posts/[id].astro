@@ -21,7 +21,7 @@ let memo: Memo
 let comments: MemoComment[]
 
 try {
-  const result = await getMemoById(`memos/${id}`)
+  const result = await getMemoById(id)
   memo = result.memo
   comments = result.comments
 } catch (error: unknown) {
@@ -42,8 +42,10 @@ const publicUrl = getMemoPublicUrl(site.instanceUrl, memo.shortId)
   site={site}
   pageType="post"
 >
-  <SiteHeader site={site} />
-  <SiteNavigation />
+  <Fragment slot="header">
+    <SiteHeader site={site} />
+    <SiteNavigation />
+  </Fragment>
   <div class="mx-auto max-w-[680px] px-4 py-8">
     <MemoEntry memo={memo} instanceUrl={site.instanceUrl} />
 
