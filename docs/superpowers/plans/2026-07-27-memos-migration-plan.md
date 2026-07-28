@@ -103,89 +103,89 @@ pnpm install
 
 ```ts
 export interface MemosAttachment {
-  name: string;
-  createTime: string;
-  filename: string;
-  content: string;
-  externalLink: string;
-  type: string;
-  size: string;
-  memo: string;
-  motionMedia: unknown;
+  name: string
+  createTime: string
+  filename: string
+  content: string
+  externalLink: string
+  type: string
+  size: string
+  memo: string
+  motionMedia: unknown
 }
 
 export interface MemosRelation {
-  memo: { name: string; snippet: string };
-  relatedMemo: { name: string; snippet: string };
-  type: string;
+  memo: { name: string, snippet: string }
+  relatedMemo: { name: string, snippet: string }
+  type: string
 }
 
 export interface MemosReaction {
-  name: string;
-  creator: string;
-  contentId: string;
-  reactionType: string;
-  createTime: string;
+  name: string
+  creator: string
+  contentId: string
+  reactionType: string
+  createTime: string
 }
 
 export interface MemosLocation {
-  placeholder: string;
-  latitude: number;
-  longitude: number;
+  placeholder: string
+  latitude: number
+  longitude: number
 }
 
 export interface MemosProperty {
-  hasLink: boolean;
-  hasTaskList: boolean;
-  hasCode: boolean;
-  hasIncompleteTasks: boolean;
-  title: string;
+  hasLink: boolean
+  hasTaskList: boolean
+  hasCode: boolean
+  hasIncompleteTasks: boolean
+  title: string
 }
 
 export interface MemoItem {
-  name: string;
-  state: string;
-  creator: string;
-  createTime: string;
-  updateTime: string;
-  content: string;
-  visibility: string;
-  tags: string[];
-  pinned: boolean;
-  attachments: MemosAttachment[];
-  relations: MemosRelation[];
-  reactions: MemosReaction[];
-  property: MemosProperty;
-  parent: string;
-  snippet: string;
-  location: MemosLocation;
+  name: string
+  state: string
+  creator: string
+  createTime: string
+  updateTime: string
+  content: string
+  visibility: string
+  tags: string[]
+  pinned: boolean
+  attachments: MemosAttachment[]
+  relations: MemosRelation[]
+  reactions: MemosReaction[]
+  property: MemosProperty
+  parent: string
+  snippet: string
+  location: MemosLocation
 }
 
 export interface ListMemosResponse {
-  memos: MemoItem[];
-  nextPageToken: string;
+  memos: MemoItem[]
+  nextPageToken: string
 }
 
 export interface GetInstanceProfileResponse {
-  version: string;
-  demo: boolean;
-  instanceUrl: string;
+  version: string
+  demo: boolean
+  instanceUrl: string
   admin?: {
-    name: string;
-    username: string;
-    displayName: string;
-    avatarUrl: string;
-    description: string;
-  };
-  commit: string;
+    name: string
+    username: string
+    displayName: string
+    avatarUrl: string
+    description: string
+  }
+  commit: string
 }
 
 export interface GetUserResponse {
-  name: string;
-  username: string;
-  displayName: string;
-  avatarUrl: string;
-  description: string;
+  name: string
+  username: string
+  displayName: string
+  avatarUrl: string
+  description: string
 }
 ```
 
@@ -201,104 +201,104 @@ export interface GetUserResponse {
 
 ```ts
 export interface MemoCreator {
-  name: string;
-  username: string;
-  displayName?: string;
-  avatarUrl?: string;
+  name: string
+  username: string
+  displayName?: string
+  avatarUrl?: string
 }
 
 export interface MemoAttachment {
-  name: string;
-  filename: string;
-  externalLink: string;
-  type: string;
-  size: string;
+  name: string
+  filename: string
+  externalLink: string
+  type: string
+  size: string
 }
 
 export interface MemoReaction {
-  reactionType: string;
-  count: number;
+  reactionType: string
+  count: number
 }
 
 export interface MemoLocation {
-  placeholder: string;
-  latitude: number;
-  longitude: number;
+  placeholder: string
+  latitude: number
+  longitude: number
 }
 
 export interface Memo {
-  id: string;
-  shortId: string;
-  state: string;
-  creator: MemoCreator;
-  createTime: string;
-  updateTime: string;
-  content: string;
-  html: string;
-  visibility: string;
-  tags: string[];
-  pinned: boolean;
-  attachments: MemoAttachment[];
-  reactions: MemoReaction[];
-  location?: MemoLocation;
+  id: string
+  shortId: string
+  state: string
+  creator: MemoCreator
+  createTime: string
+  updateTime: string
+  content: string
+  html: string
+  visibility: string
+  tags: string[]
+  pinned: boolean
+  attachments: MemoAttachment[]
+  reactions: MemoReaction[]
+  location?: MemoLocation
   property: {
-    hasLink: boolean;
-    hasTaskList: boolean;
-    hasCode: boolean;
-    hasIncompleteTasks: boolean;
-    title?: string;
-  };
-  snippet: string;
+    hasLink: boolean
+    hasTaskList: boolean
+    hasCode: boolean
+    hasIncompleteTasks: boolean
+    title?: string
+  }
+  snippet: string
 }
 
 export interface MemoComment extends Memo {
-  parent: string;
+  parent: string
 }
 
 export interface MemoInfo {
-  memos: Memo[];
-  instanceUrl: string;
-  title?: string;
-  description?: string;
-  avatar?: string;
-  nextPageToken?: string;
+  memos: Memo[]
+  instanceUrl: string
+  title?: string
+  description?: string
+  avatar?: string
+  nextPageToken?: string
 }
 
 export interface FriendLink {
-  id: number;
-  name: string;
-  link: string;
-  avatar: string;
-  description: string;
-  status: string;
-  enableRss: boolean;
-  updatedAt: number;
-  snapshot?: string;
-  friendLinkPage?: string;
-  feed?: string;
+  id: number
+  name: string
+  link: string
+  avatar: string
+  description: string
+  status: string
+  enableRss: boolean
+  updatedAt: number
+  snapshot?: string
+  friendLinkPage?: string
+  feed?: string
 }
 
 export interface FriendLinkResponse {
-  code: number;
-  message: string;
+  code: number
+  message: string
   data: {
-    items: FriendLink[];
-    total: number;
-    page: number;
-    page_size: number;
-  };
+    items: FriendLink[]
+    total: number
+    page: number
+    page_size: number
+  }
 }
 
 export interface NavItem {
-  title: string;
-  href: string;
+  title: string
+  href: string
 }
 
 export interface SeoMeta {
-  title?: string;
-  text?: string;
-  noindex?: string | boolean;
-  nofollow?: string | boolean;
+  title?: string
+  text?: string
+  noindex?: string | boolean
+  nofollow?: string | boolean
 }
 ```
 
@@ -316,56 +316,56 @@ export interface SeoMeta {
 export function getMemosApiUrl(
   env: Record<string, string | undefined> = getRuntimeEnv(),
 ): string {
-  return getEnv(env, "MEMOS_API_URL") || "https://mm.2005815.xyz/api/v1";
+  return getEnv(env, 'MEMOS_API_URL') || 'https://mm.2005815.xyz/api/v1'
 }
 
 export function getMemosCreators(
   env: Record<string, string | undefined> = getRuntimeEnv(),
 ): string[] {
-  const value = getEnv(env, "MEMOS_CREATORS");
+  const value = getEnv(env, 'MEMOS_CREATORS')
   return value
     ? value
-        .split(",")
-        .map((s) => s.trim())
+        .split(',')
+        .map(s => s.trim())
         .filter(Boolean)
-    : [];
+    : []
 }
 
 export function getMemosPageSize(
   env: Record<string, string | undefined> = getRuntimeEnv(),
 ): number {
-  const value = Number.parseInt(getEnv(env, "MEMOS_PAGE_SIZE") || "20", 10);
-  return Number.isNaN(value) || value < 1 ? 20 : value;
+  const value = Number.parseInt(getEnv(env, 'MEMOS_PAGE_SIZE') || '20', 10)
+  return Number.isNaN(value) || value < 1 ? 20 : value
 }
 
 export function getMemosTitle(
   env: Record<string, string | undefined> = getRuntimeEnv(),
 ): string | undefined {
-  return getEnv(env, "MEMOS_TITLE");
+  return getEnv(env, 'MEMOS_TITLE')
 }
 
 export function getMemosDescription(
   env: Record<string, string | undefined> = getRuntimeEnv(),
 ): string | undefined {
-  return getEnv(env, "MEMOS_DESCRIPTION");
+  return getEnv(env, 'MEMOS_DESCRIPTION')
 }
 
 export function getMemosAvatar(
   env: Record<string, string | undefined> = getRuntimeEnv(),
 ): string | undefined {
-  return getEnv(env, "MEMOS_AVATAR");
+  return getEnv(env, 'MEMOS_AVATAR')
 }
 
 export function getFriendLinkApiUrl(
   env: Record<string, string | undefined> = getRuntimeEnv(),
 ): string {
-  return getEnv(env, "FRIEND_LINK_API_URL") || "https://blog-api.2005815.xyz/";
+  return getEnv(env, 'FRIEND_LINK_API_URL') || 'https://blog-api.2005815.xyz/'
 }
 
 export function getFriendLinkApplyUrl(
   env: Record<string, string | undefined> = getRuntimeEnv(),
 ): string | undefined {
-  return getEnv(env, "FRIEND_LINK_APPLY_URL");
+  return getEnv(env, 'FRIEND_LINK_APPLY_URL')
 }
 ```
 
@@ -384,96 +384,96 @@ export function getFriendLinkApplyUrl(
 - [ ] **Step 1: 写入 API 请求函数**
 
 ```ts
-import { ofetch } from "ofetch";
-import { getMemosApiUrl } from "../env.ts";
 import type {
   GetInstanceProfileResponse,
   GetUserResponse,
   ListMemosResponse,
   MemoItem,
-} from "./types.ts";
+} from './types.ts'
+import { ofetch } from 'ofetch'
+import { getMemosApiUrl } from '../env.ts'
 
 function getApiBaseUrl(): string {
-  return getMemosApiUrl().replace(/\/$/, "");
+  return getMemosApiUrl().replace(/\/$/, '')
 }
 
 function memosFetch<T>(
   path: string,
   query: Record<string, string | number | undefined> = {},
 ): Promise<T> {
-  const params = new URLSearchParams();
+  const params = new URLSearchParams()
   for (const [key, value] of Object.entries(query)) {
-    if (value !== undefined && value !== "") {
-      params.set(key, String(value));
+    if (value !== undefined && value !== '') {
+      params.set(key, String(value))
     }
   }
-  const queryString = params.toString();
-  const url = `${getApiBaseUrl()}${path}${queryString ? `?${queryString}` : ""}`;
+  const queryString = params.toString()
+  const url = `${getApiBaseUrl()}${path}${queryString ? `?${queryString}` : ''}`
   return ofetch(url, {
     headers: {
-      Accept: "application/json",
-      "User-Agent": "BroadcastChannel-Memos/1.0",
+      'Accept': 'application/json',
+      'User-Agent': 'BroadcastChannel-Memos/1.0',
     },
     retry: 2,
     timeout: 15000,
-  });
+  })
 }
 
 export function listMemos(
   params: {
-    pageSize?: number;
-    pageToken?: string;
-    filter?: string;
-    orderBy?: string;
+    pageSize?: number
+    pageToken?: string
+    filter?: string
+    orderBy?: string
   } = {},
 ): Promise<ListMemosResponse> {
-  return memosFetch<ListMemosResponse>("/memos", {
+  return memosFetch<ListMemosResponse>('/memos', {
     pageSize: params.pageSize,
     pageToken: params.pageToken,
     filter: params.filter,
-    orderBy: params.orderBy || "pinned desc, create_time desc",
-  });
+    orderBy: params.orderBy || 'pinned desc, create_time desc',
+  })
 }
 
 export function getMemo(id: string): Promise<MemoItem> {
-  return memosFetch<MemoItem>(`/memos/${id}`);
+  return memosFetch<MemoItem>(`/memos/${id}`)
 }
 
 export function searchMemos(
   q: string,
-  params: { pageSize?: number; pageToken?: string } = {},
+  params: { pageSize?: number, pageToken?: string } = {},
 ): Promise<ListMemosResponse> {
-  const escaped = q.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-  const filter = `content.contains('${escaped}') || tags.contains('${escaped}')`;
-  return listMemos({ ...params, filter });
+  const escaped = q.replace(/\\/g, '\\\\').replace(/'/g, '\\\'')
+  const filter = `content.contains('${escaped}') || tags.contains('${escaped}')`
+  return listMemos({ ...params, filter })
 }
 
 export function listComments(
   id: string,
-  params: { pageSize?: number; pageToken?: string } = {},
+  params: { pageSize?: number, pageToken?: string } = {},
 ): Promise<ListMemosResponse> {
   return memosFetch<ListMemosResponse>(`/memos/${id}/comments`, {
     pageSize: params.pageSize,
     pageToken: params.pageToken,
-    orderBy: "create_time asc",
-  });
+    orderBy: 'create_time asc',
+  })
 }
 
 export function listReactions(
   id: string,
-): Promise<{ reactions: { reactionType: string }[]; totalSize: number }> {
+): Promise<{ reactions: { reactionType: string }[], totalSize: number }> {
   return memosFetch<{
-    reactions: { reactionType: string }[];
-    totalSize: number;
-  }>(`/memos/${id}/reactions`);
+    reactions: { reactionType: string }[]
+    totalSize: number
+  }>(`/memos/${id}/reactions`)
 }
 
 export function getInstanceProfile(): Promise<GetInstanceProfileResponse> {
-  return memosFetch<GetInstanceProfileResponse>("/instance/profile");
+  return memosFetch<GetInstanceProfileResponse>('/instance/profile')
 }
 
 export function getUser(username: string): Promise<GetUserResponse> {
-  return memosFetch<GetUserResponse>(`/users/${username}`);
+  return memosFetch<GetUserResponse>(`/users/${username}`)
 }
 ```
 
@@ -488,41 +488,41 @@ export function getUser(username: string): Promise<GetUserResponse> {
 - [ ] **Step 1: 写入缓存封装**
 
 ```ts
-import { defineCachedFunction } from "ocache";
-import * as api from "./api.ts";
+import { defineCachedFunction } from 'ocache'
+import * as api from './api.ts'
 
-const cacheOptions = { maxAge: 1000 * 60 * 5 };
+const cacheOptions = { maxAge: 1000 * 60 * 5 }
 
 export const getCachedListMemos = defineCachedFunction(api.listMemos, {
   ...cacheOptions,
   key: (params: Parameters<typeof api.listMemos>[0]) =>
     `memos:list:${JSON.stringify(params)}`,
-});
+})
 
 export const getCachedGetMemo = defineCachedFunction(api.getMemo, {
   ...cacheOptions,
   key: (id: string) => `memos:${id}`,
-});
+})
 
 export const getCachedSearchMemos = defineCachedFunction(api.searchMemos, {
   ...cacheOptions,
   key: (q: string, params: Parameters<typeof api.searchMemos>[1]) =>
     `memos:search:${q}:${JSON.stringify(params)}`,
-});
+})
 
 export const getCachedListComments = defineCachedFunction(api.listComments, {
   ...cacheOptions,
   key: (id: string, params: Parameters<typeof api.listComments>[1]) =>
     `memos:comments:${id}:${JSON.stringify(params)}`,
-});
+})
 
 export const getCachedInstanceProfile = defineCachedFunction(
   api.getInstanceProfile,
   {
     ...cacheOptions,
-    key: () => "memos:instance:profile",
+    key: () => 'memos:instance:profile',
   },
-);
+)
 ```
 
 ---
@@ -536,16 +536,16 @@ export const getCachedInstanceProfile = defineCachedFunction(
 - [ ] **Step 1: 写入 Markdown 渲染函数**
 
 ```ts
-import { marked } from "marked";
-import sanitizeHtml from "sanitize-html";
-import { highlightCode } from "../prism.ts";
+import { marked } from 'marked'
+import sanitizeHtml from 'sanitize-html'
+import { highlightCode } from '../prism.ts'
 
-const tagRegex = /(^|\s)#([\u4e00-\u9fa5a-zA-Z0-9_\-]+)/g;
+const tagRegex = /(^|\s)#([\u4E00-\u9FA5\w\-]+)/g
 
 function transformTags(content: string): string {
   return content.replace(tagRegex, (match, prefix, tag) => {
-    return `${prefix}<a href="/search/result?q=%23${encodeURIComponent(tag)}" class="memo-tag">#${tag}</a>`;
-  });
+    return `${prefix}<a href="/search/result?q=%23${encodeURIComponent(tag)}" class="memo-tag">#${tag}</a>`
+  })
 }
 
 function transformCodeBlocks(html: string): string {
@@ -555,75 +555,75 @@ function transformCodeBlocks(html: string): string {
       (_, lang, code) => {
         const highlighted = highlightCode(
           decodeHtmlEntities(code),
-          lang || "text",
-        );
-        return `<pre class="language-${lang || "text"}"><code class="language-${lang || "text"}">${highlighted}</code></pre>`;
+          lang || 'text',
+        )
+        return `<pre class="language-${lang || 'text'}"><code class="language-${lang || 'text'}">${highlighted}</code></pre>`
       },
     )
     .replace(/<pre><code>([\s\S]*?)<\/code><\/pre>/g, (_, code) => {
-      const highlighted = highlightCode(decodeHtmlEntities(code), "text");
-      return `<pre class="language-text"><code class="language-text">${highlighted}</code></pre>`;
-    });
+      const highlighted = highlightCode(decodeHtmlEntities(code), 'text')
+      return `<pre class="language-text"><code class="language-text">${highlighted}</code></pre>`
+    })
 }
 
 function decodeHtmlEntities(html: string): string {
   return html
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+    .replace(/&#39;/g, '\'')
 }
 
 function sanitizeLinks(html: string): string {
-  return html.replace(/<a /g, '<a target="_blank" rel="noopener noreferrer" ');
+  return html.replace(/<a /g, '<a target="_blank" rel="noopener noreferrer" ')
 }
 
 export function renderMarkdown(content: string): string {
-  const withTags = transformTags(content);
-  const rawHtml = marked.parse(withTags, { async: false }) as string;
-  const withCode = transformCodeBlocks(rawHtml);
-  const withLinks = sanitizeLinks(withCode);
+  const withTags = transformTags(content)
+  const rawHtml = marked.parse(withTags, { async: false }) as string
+  const withCode = transformCodeBlocks(rawHtml)
+  const withLinks = sanitizeLinks(withCode)
   return sanitizeHtml(withLinks, {
     allowedTags: [
-      "p",
-      "br",
-      "strong",
-      "em",
-      "a",
-      "ul",
-      "ol",
-      "li",
-      "blockquote",
-      "code",
-      "pre",
-      "h1",
-      "h2",
-      "h3",
-      "h4",
-      "h5",
-      "h6",
-      "table",
-      "thead",
-      "tbody",
-      "tr",
-      "th",
-      "td",
-      "del",
-      "img",
+      'p',
+      'br',
+      'strong',
+      'em',
+      'a',
+      'ul',
+      'ol',
+      'li',
+      'blockquote',
+      'code',
+      'pre',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'table',
+      'thead',
+      'tbody',
+      'tr',
+      'th',
+      'td',
+      'del',
+      'img',
     ],
     allowedAttributes: {
-      a: ["href", "target", "rel", "class"],
-      code: ["class"],
-      pre: ["class"],
-      img: ["src", "alt", "title"],
+      a: ['href', 'target', 'rel', 'class'],
+      code: ['class'],
+      pre: ['class'],
+      img: ['src', 'alt', 'title'],
     },
     allowedClasses: {
-      a: ["memo-tag"],
-      code: ["language-*"],
-      pre: ["language-*"],
+      a: ['memo-tag'],
+      code: ['language-*'],
+      pre: ['language-*'],
     },
-  });
+  })
 }
 ```
 
@@ -632,18 +632,18 @@ export function renderMarkdown(content: string): string {
 确认 `src/lib/prism.ts` 导出 `highlightCode` 函数。如果不存在，创建或修改：
 
 ```ts
-import flourite from "flourite";
-import Prism from "prismjs";
-import loadLanguages from "prismjs-components-importer";
+import flourite from 'flourite'
+import Prism from 'prismjs'
+import loadLanguages from 'prismjs-components-importer'
 
 export function highlightCode(code: string, lang: string): string {
-  const detected = lang === "text" ? flourite(code).language : lang;
-  const language = loadLanguages(detected) ? detected : "text";
+  const detected = lang === 'text' ? flourite(code).language : lang
+  const language = loadLanguages(detected) ? detected : 'text'
   return Prism.highlight(
     code,
     Prism.languages[language] || Prism.languages.text,
     language,
-  );
+  )
 }
 ```
 
@@ -658,13 +658,13 @@ export function highlightCode(code: string, lang: string): string {
 - [ ] **Step 1: 写入辅助函数**
 
 ```ts
-import type { MemoAttachment, MemoLocation } from "../../types.ts";
+import type { MemoAttachment, MemoLocation } from '../../types.ts'
 
 export interface GroupedAttachments {
-  images: MemoAttachment[];
-  videos: MemoAttachment[];
-  audios: MemoAttachment[];
-  others: MemoAttachment[];
+  images: MemoAttachment[]
+  videos: MemoAttachment[]
+  audios: MemoAttachment[]
+  others: MemoAttachment[]
 }
 
 export function groupAttachments(
@@ -672,38 +672,44 @@ export function groupAttachments(
 ): GroupedAttachments {
   return attachments.reduce(
     (groups, attachment) => {
-      const type = attachment.type || "";
-      if (type.startsWith("image/")) {
-        groups.images.push(attachment);
-      } else if (type.startsWith("video/")) {
-        groups.videos.push(attachment);
-      } else if (type.startsWith("audio/")) {
-        groups.audios.push(attachment);
-      } else {
-        groups.others.push(attachment);
+      const type = attachment.type || ''
+      if (type.startsWith('image/')) {
+        groups.images.push(attachment)
       }
-      return groups;
+      else if (type.startsWith('video/')) {
+        groups.videos.push(attachment)
+      }
+      else if (type.startsWith('audio/')) {
+        groups.audios.push(attachment)
+      }
+      else {
+        groups.others.push(attachment)
+      }
+      return groups
     },
     { images: [], videos: [], audios: [], others: [] } as GroupedAttachments,
-  );
+  )
 }
 
 export function formatFileSize(size: string): string {
-  const bytes = Number.parseInt(size, 10);
-  if (Number.isNaN(bytes)) return size;
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  const bytes = Number.parseInt(size, 10)
+  if (Number.isNaN(bytes))
+    return size
+  if (bytes < 1024)
+    return `${bytes} B`
+  if (bytes < 1024 * 1024)
+    return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
 export function getOpenStreetMapUrl(location: MemoLocation): string {
-  const { latitude, longitude } = location;
-  return `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=16/${latitude}/${longitude}`;
+  const { latitude, longitude } = location
+  return `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=16/${latitude}/${longitude}`
 }
 
 export function getMemoPublicUrl(instanceUrl: string, shortId: string): string {
-  const base = instanceUrl.replace(/\/$/, "");
-  return `${base}/m/${shortId}`;
+  const base = instanceUrl.replace(/\/$/, '')
+  return `${base}/m/${shortId}`
 }
 ```
 
@@ -725,10 +731,10 @@ import type {
   MemoCreator,
   MemoInfo,
   MemoReaction,
-} from "../../types.ts";
-import type { MemoItem, MemosAttachment, MemosReaction } from "./types.ts";
-import { renderMarkdown } from "./markdown.ts";
-import { getMemosCreators } from "../env.ts";
+} from '../../types.ts'
+import type { MemoItem, MemosAttachment, MemosReaction } from './types.ts'
+import { getMemosCreators } from '../env.ts'
+import { renderMarkdown } from './markdown.ts'
 
 function parseAttachment(a: MemosAttachment): MemoAttachment {
   return {
@@ -737,27 +743,27 @@ function parseAttachment(a: MemosAttachment): MemoAttachment {
     externalLink: a.externalLink,
     type: a.type,
     size: a.size,
-  };
+  }
 }
 
 function aggregateReactions(reactions: MemosReaction[]): MemoReaction[] {
-  const map = new Map<string, number>();
+  const map = new Map<string, number>()
   for (const r of reactions) {
-    map.set(r.reactionType, (map.get(r.reactionType) || 0) + 1);
+    map.set(r.reactionType, (map.get(r.reactionType) || 0) + 1)
   }
   return Array.from(map.entries()).map(([reactionType, count]) => ({
     reactionType,
     count,
-  }));
+  }))
 }
 
 function parseCreator(creatorName: string): MemoCreator {
-  const username = creatorName.replace(/^users\//, "");
-  return { name: creatorName, username };
+  const username = creatorName.replace(/^users\//, '')
+  return { name: creatorName, username }
 }
 
 export function parseMemo(item: MemoItem): Memo {
-  const shortId = item.name.replace(/^memos\//, "");
+  const shortId = item.name.replace(/^memos\//, '')
   return {
     id: item.name,
     shortId,
@@ -778,36 +784,37 @@ export function parseMemo(item: MemoItem): Memo {
       hasTaskList: false,
       hasCode: false,
       hasIncompleteTasks: false,
-      title: "",
+      title: '',
     },
     snippet: item.snippet || item.content.slice(0, 200),
-  };
+  }
 }
 
 export function parseComment(item: MemoItem): MemoComment {
   return {
     ...parseMemo(item),
-    parent: item.parent || "",
-  };
+    parent: item.parent || '',
+  }
 }
 
 export function filterByCreators(memos: Memo[]): Memo[] {
-  const creators = getMemosCreators();
-  if (creators.length === 0) return memos;
-  return memos.filter((m) => creators.includes(m.creator.username));
+  const creators = getMemosCreators()
+  if (creators.length === 0)
+    return memos
+  return memos.filter(m => creators.includes(m.creator.username))
 }
 
 export function buildMemoInfo(
-  response: { memos: MemoItem[]; nextPageToken?: string },
+  response: { memos: MemoItem[], nextPageToken?: string },
   instanceUrl: string,
 ): MemoInfo {
-  const allMemos = response.memos.map(parseMemo);
-  const filtered = filterByCreators(allMemos);
+  const allMemos = response.memos.map(parseMemo)
+  const filtered = filterByCreators(allMemos)
   return {
     memos: filtered,
     instanceUrl,
     nextPageToken: response.nextPageToken,
-  };
+  }
 }
 ```
 
@@ -822,53 +829,53 @@ export function buildMemoInfo(
 - [ ] **Step 1: 写入查询函数**
 
 ```ts
-import { getMemosPageSize } from "../env.ts";
-import * as cache from "./cache.ts";
-import { buildMemoInfo, parseComment, parseMemo } from "./parse.ts";
+import type { Memo, MemoComment, MemoInfo } from '../../types.ts'
+import { getMemosPageSize } from '../env.ts'
+import * as cache from './cache.ts'
+import { buildMemoInfo, parseComment, parseMemo } from './parse.ts'
 import {
-  getOpenStreetMapUrl,
-  getMemoPublicUrl,
-  groupAttachments,
   formatFileSize,
-} from "./render.ts";
-import type { Memo, MemoComment, MemoInfo } from "../../types.ts";
+  getMemoPublicUrl,
+  getOpenStreetMapUrl,
+  groupAttachments,
+} from './render.ts'
 
 export async function getMemosInfo(
-  params: { pageToken?: string; q?: string } = {},
+  params: { pageToken?: string, q?: string } = {},
 ): Promise<MemoInfo> {
-  const pageSize = getMemosPageSize();
-  const instance = await cache.getCachedInstanceProfile();
-  const queryParams = { pageSize, pageToken: params.pageToken };
+  const pageSize = getMemosPageSize()
+  const instance = await cache.getCachedInstanceProfile()
+  const queryParams = { pageSize, pageToken: params.pageToken }
   const response = params.q
     ? await cache.getCachedSearchMemos(params.q, queryParams)
-    : await cache.getCachedListMemos(queryParams);
-  return buildMemoInfo(response, instance.instanceUrl);
+    : await cache.getCachedListMemos(queryParams)
+  return buildMemoInfo(response, instance.instanceUrl)
 }
 
 export async function getMemoById(
   id: string,
-): Promise<{ memo: Memo; comments: MemoComment[] }> {
+): Promise<{ memo: Memo, comments: MemoComment[] }> {
   const [rawMemo, rawComments, instance] = await Promise.all([
     cache.getCachedGetMemo(id),
     cache.getCachedListComments(id, { pageSize: 100 }),
     cache.getCachedInstanceProfile(),
-  ]);
-  const memo = parseMemo(rawMemo);
-  const comments = (rawComments.memos || []).map(parseComment);
-  return { memo, comments };
+  ])
+  const memo = parseMemo(rawMemo)
+  const comments = (rawComments.memos || []).map(parseComment)
+  return { memo, comments }
 }
 
 export async function getMemoComments(id: string): Promise<MemoComment[]> {
-  const response = await cache.getCachedListComments(id, { pageSize: 100 });
-  return (response.memos || []).map(parseComment);
+  const response = await cache.getCachedListComments(id, { pageSize: 100 })
+  return (response.memos || []).map(parseComment)
 }
 
 export {
-  getOpenStreetMapUrl,
-  getMemoPublicUrl,
-  groupAttachments,
   formatFileSize,
-};
+  getMemoPublicUrl,
+  getOpenStreetMapUrl,
+  groupAttachments,
+}
 ```
 
 ---
@@ -882,31 +889,31 @@ export {
 - [ ] **Step 1: 写入站点信息函数**
 
 ```ts
-import { getMemosAvatar, getMemosDescription, getMemosTitle } from "../env.ts";
-import * as cache from "./cache.ts";
+import { getMemosAvatar, getMemosDescription, getMemosTitle } from '../env.ts'
+import * as cache from './cache.ts'
 
 export interface SiteInfo {
-  title: string;
-  description: string;
-  avatar: string;
-  instanceUrl: string;
+  title: string
+  description: string
+  avatar: string
+  instanceUrl: string
 }
 
 export async function getSiteInfo(): Promise<SiteInfo> {
-  const profile = await cache.getCachedInstanceProfile();
-  const envTitle = getMemosTitle();
-  const envDescription = getMemosDescription();
-  const envAvatar = getMemosAvatar();
+  const profile = await cache.getCachedInstanceProfile()
+  const envTitle = getMemosTitle()
+  const envDescription = getMemosDescription()
+  const envAvatar = getMemosAvatar()
   return {
     title:
-      envTitle ||
-      profile.admin?.displayName ||
-      profile.admin?.username ||
-      "Memos",
-    description: envDescription || profile.admin?.description || "",
-    avatar: envAvatar || profile.admin?.avatarUrl || "",
+      envTitle
+      || profile.admin?.displayName
+      || profile.admin?.username
+      || 'Memos',
+    description: envDescription || profile.admin?.description || '',
+    avatar: envAvatar || profile.admin?.avatarUrl || '',
     instanceUrl: profile.instanceUrl,
-  };
+  }
 }
 ```
 
@@ -921,24 +928,24 @@ export async function getSiteInfo(): Promise<SiteInfo> {
 - [ ] **Step 1: 重写 feed 数据组装函数**
 
 ```ts
-import { getMemoPublicUrl } from "./memos/render.ts";
-import type { Memo, MemoInfo } from "../types.ts";
+import type { Memo, MemoInfo } from '../types.ts'
+import { getMemoPublicUrl } from './memos/render.ts'
 
 export interface FeedMemo {
-  id: string;
-  title: string;
-  link: string;
-  pubDate: Date;
-  content: string;
-  snippet: string;
+  id: string
+  title: string
+  link: string
+  pubDate: Date
+  content: string
+  snippet: string
 }
 
 export function buildFeedMemos(info: MemoInfo): FeedMemo[] {
   return info.memos.map((memo: Memo) => {
-    const title =
-      memo.property.title ||
-      memo.snippet.slice(0, 60) ||
-      `Memo ${memo.shortId}`;
+    const title
+      = memo.property.title
+        || memo.snippet.slice(0, 60)
+        || `Memo ${memo.shortId}`
     return {
       id: memo.id,
       title,
@@ -946,8 +953,8 @@ export function buildFeedMemos(info: MemoInfo): FeedMemo[] {
       pubDate: new Date(memo.createTime),
       content: memo.html,
       snippet: memo.snippet,
-    };
-  });
+    }
+  })
 }
 ```
 
@@ -962,7 +969,7 @@ export function buildFeedMemos(info: MemoInfo): FeedMemo[] {
 - [ ] **Step 1: 调整 SEO 函数使用新的 SiteInfo**
 
 ```ts
-import type { SiteInfo } from "./memos/instance.ts";
+import type { SiteInfo } from './memos/instance.ts'
 
 export function getSiteMeta(site: SiteInfo) {
   return {
@@ -970,7 +977,7 @@ export function getSiteMeta(site: SiteInfo) {
     description: site.description,
     image: site.avatar,
     url: site.instanceUrl,
-  };
+  }
 }
 ```
 
@@ -987,33 +994,33 @@ export function getSiteMeta(site: SiteInfo) {
 删除 `RSS_PREFIX` / `RSS_URL` 中与 Telegram 频道相关的逻辑，只保留：
 
 ```ts
-import { defineMiddleware } from "astro:middleware";
+import { defineMiddleware } from 'astro:middleware'
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const response = await next();
-  const url = new URL(context.request.url);
+  const response = await next()
+  const url = new URL(context.request.url)
 
-  if (url.pathname.startsWith("/search/%23")) {
-    const tag = decodeURIComponent(url.pathname.replace("/search/%23", ""));
+  if (url.pathname.startsWith('/search/%23')) {
+    const tag = decodeURIComponent(url.pathname.replace('/search/%23', ''))
     return context.redirect(
       `/search/result?q=%23${encodeURIComponent(tag)}`,
       301,
-    );
+    )
   }
 
   if (response.status >= 200 && response.status < 400) {
-    const contentType = response.headers.get("content-type") || "";
-    if (contentType.includes("text/html")) {
-      response.headers.set("Speculation-Rules", "/rules/prefetch.json");
+    const contentType = response.headers.get('content-type') || ''
+    if (contentType.includes('text/html')) {
+      response.headers.set('Speculation-Rules', '/rules/prefetch.json')
       response.headers.set(
-        "Cache-Control",
-        "public, max-age=300, s-maxage=300",
-      );
+        'Cache-Control',
+        'public, max-age=300, s-maxage=300',
+      )
     }
   }
 
-  return response;
-});
+  return response
+})
 ```
 
 ---
@@ -1028,7 +1035,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
 ```astro
 ---
+
 ---
+
 <button
   id="theme-toggle"
   aria-label="切换主题"
@@ -1039,7 +1048,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 </button>
 
 <script is:inline>
-  (function () {
+  ;(function () {
     const root = document.documentElement
     const toggle = document.getElementById('theme-toggle')
     const lightIcon = toggle?.querySelector('.theme-icon-light')
@@ -1053,12 +1062,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
         root.classList.add('dark')
         lightIcon?.classList.add('hidden')
         darkIcon?.classList.remove('hidden')
+        return
       }
-      else {
-        root.classList.remove('dark')
-        lightIcon?.classList.remove('hidden')
-        darkIcon?.classList.add('hidden')
-      }
+
+      root.classList.remove('dark')
+      lightIcon?.classList.remove('hidden')
+      darkIcon?.classList.add('hidden')
     }
 
     applyTheme(isDark)
@@ -1086,7 +1095,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
 ```astro
 <script is:inline>
-  (function () {
+  ;(function () {
     const stored = localStorage.getItem('theme')
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     if (stored ? stored === 'dark' : systemDark) {
@@ -1157,12 +1166,22 @@ interface Props {
 
 const { creator } = Astro.props
 ---
-<div class="creator-avatar flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[var(--bg-mute)]">
-  {creator.avatarUrl ? (
-    <img src={creator.avatarUrl} alt={creator.displayName || creator.username} class="h-full w-full object-cover" loading="lazy" />
-  ) : (
-    <Icon name="ri:user-line" class="h-6 w-6 text-[var(--text-muted)]" />
-  )}
+
+<div
+  class="creator-avatar flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[var(--bg-mute)]"
+>
+  {
+    creator.avatarUrl ? (
+      <img
+        src={creator.avatarUrl}
+        alt={creator.displayName || creator.username}
+        class="h-full w-full object-cover"
+        loading="lazy"
+      />
+    ) : (
+      <Icon name="ri:user-line" class="h-6 w-6 text-[var(--text-muted)]" />
+    )
+  }
 </div>
 ```
 
@@ -1206,80 +1225,117 @@ const publicUrl = getMemoPublicUrl(instanceUrl, memo.shortId)
         <time datetime={memo.createTime}>{formatRelativeTime(memo.createTime)}</time>
       </a>
     </div>
-    {memo.pinned && <span class="memo-pinned ml-auto text-xs text-[var(--text-muted)]"><Icon name="ri:pushpin-line" class="inline h-4 w-4" /> 置顶</span>}
+    {
+      memo.pinned && (
+        <span class="memo-pinned ml-auto text-xs text-[var(--text-muted)]">
+          <Icon name="ri:pushpin-line" class="inline h-4 w-4" /> 置顶
+        </span>
+      )
+    }
   </header>
 
   <div class="memo-content prose prose-sm max-w-none text-[var(--text)]" set:html={memo.html} />
 
-  {images.length > 0 && (
-    <div class={`memo-images grid gap-2 mt-3 ${images.length === 1 ? 'grid-cols-1' : images.length === 2 ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-3'}`}>
-      {images.map((img, idx) => (
-        <button
-          type="button"
-          class="memo-image-button relative overflow-hidden rounded-lg bg-[var(--bg-mute)] aspect-square"
-          popovertarget={`lightbox-${memo.shortId}-${idx}`}
-          aria-label="查看大图"
-        >
-          <img src={img.externalLink} alt={img.filename} class="h-full w-full object-cover" loading="lazy" />
-          {idx === 3 && images.length > 4 && (
-            <span class="absolute inset-0 flex items-center justify-center bg-black/50 text-white text-lg font-bold">+{images.length - 4}</span>
-          )}
-        </button>
-      ))}
-    </div>
-  )}
+  {
+    images.length > 0 && (
+      <div
+        class={`memo-images grid gap-2 mt-3 ${images.length === 1 ? 'grid-cols-1' : images.length === 2 ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-3'}`}
+      >
+        {images.map((img, idx) => (
+          <button
+            type="button"
+            class="memo-image-button relative overflow-hidden rounded-lg bg-[var(--bg-mute)] aspect-square"
+            popovertarget={`lightbox-${memo.shortId}-${idx}`}
+            aria-label="查看大图"
+          >
+            <img src={img.externalLink} alt={img.filename} class="h-full w-full object-cover" loading="lazy" />
+            {idx === 3 && images.length > 4 && (
+              <span class="absolute inset-0 flex items-center justify-center bg-black/50 text-white text-lg font-bold">
+                +{images.length - 4}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+    )
+  }
 
-  {videos.length > 0 && videos.map(video => (
-    <video controls class="memo-video mt-3 w-full rounded-lg" preload="metadata">
-      <source src={video.externalLink} type={video.type} />
-    </video>
-  ))}
+  {
+    videos.length > 0 &&
+      videos.map((video) => (
+        <video controls class="memo-video mt-3 w-full rounded-lg" preload="metadata">
+          <source src={video.externalLink} type={video.type} />
+        </video>
+      ))
+  }
 
-  {audios.length > 0 && audios.map(audio => (
-    <audio controls class="memo-audio mt-3 w-full" preload="metadata">
-      <source src={audio.externalLink} type={audio.type} />
-    </audio>
-  ))}
+  {
+    audios.length > 0 &&
+      audios.map((audio) => (
+        <audio controls class="memo-audio mt-3 w-full" preload="metadata">
+          <source src={audio.externalLink} type={audio.type} />
+        </audio>
+      ))
+  }
 
-  {others.length > 0 && (
-    <div class="memo-files mt-3 space-y-2">
-      {others.map(file => (
-        <a href={file.externalLink} download={file.filename} class="memo-file flex items-center gap-2 rounded-lg border border-[var(--border)] p-3 hover:bg-[var(--bg-soft)]">
-          <Icon name="ri:file-download-line" class="h-5 w-5 text-[var(--text-muted)]" />
-          <div class="min-w-0 flex-1">
-            <div class="truncate text-sm text-[var(--text)]">{file.filename}</div>
-            <div class="text-xs text-[var(--text-muted)]">{formatFileSize(file.size)}</div>
-          </div>
-        </a>
-      ))}
-    </div>
-  )}
+  {
+    others.length > 0 && (
+      <div class="memo-files mt-3 space-y-2">
+        {others.map((file) => (
+          <a
+            href={file.externalLink}
+            download={file.filename}
+            class="memo-file flex items-center gap-2 rounded-lg border border-[var(--border)] p-3 hover:bg-[var(--bg-soft)]"
+          >
+            <Icon name="ri:file-download-line" class="h-5 w-5 text-[var(--text-muted)]" />
+            <div class="min-w-0 flex-1">
+              <div class="truncate text-sm text-[var(--text)]">{file.filename}</div>
+              <div class="text-xs text-[var(--text-muted)]">{formatFileSize(file.size)}</div>
+            </div>
+          </a>
+        ))}
+      </div>
+    )
+  }
 
-  {memo.location && (
-    <a href={getOpenStreetMapUrl(memo.location)} target="_blank" rel="noopener noreferrer" class="memo-location mt-3 flex items-center gap-2 rounded-lg bg-[var(--bg-soft)] p-3 text-sm text-[var(--text-muted)] hover:text-[var(--link)]">
-      <Icon name="ri:map-pin-line" class="h-4 w-4 shrink-0" />
-      <span class="truncate">{memo.location.placeholder}</span>
-    </a>
-  )}
+  {
+    memo.location && (
+      <a
+        href={getOpenStreetMapUrl(memo.location)}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="memo-location mt-3 flex items-center gap-2 rounded-lg bg-[var(--bg-soft)] p-3 text-sm text-[var(--text-muted)] hover:text-[var(--link)]"
+      >
+        <Icon name="ri:map-pin-line" class="h-4 w-4 shrink-0" />
+        <span class="truncate">{memo.location.placeholder}</span>
+      </a>
+    )
+  }
 
-  {memo.reactions.length > 0 && (
-    <div class="memo-reactions mt-3 flex flex-wrap gap-2">
-      {memo.reactions.map(r => (
-        <span class="inline-flex items-center gap-1 rounded-full bg-[var(--bg-soft)] px-2 py-1 text-sm">
-          <span>{r.reactionType}</span>
-          <span class="text-[var(--text-muted)]">{r.count}</span>
-        </span>
-      ))}
-    </div>
-  )}
+  {
+    memo.reactions.length > 0 && (
+      <div class="memo-reactions mt-3 flex flex-wrap gap-2">
+        {memo.reactions.map((r) => (
+          <span class="inline-flex items-center gap-1 rounded-full bg-[var(--bg-soft)] px-2 py-1 text-sm">
+            <span>{r.reactionType}</span>
+            <span class="text-[var(--text-muted)]">{r.count}</span>
+          </span>
+        ))}
+      </div>
+    )
+  }
 
-  {memo.tags.length > 0 && (
-    <div class="memo-tags mt-3 flex flex-wrap gap-2">
-      {memo.tags.map(tag => (
-        <a href={`/search/result?q=%23${encodeURIComponent(tag)}`} class="text-sm text-[var(--link)] hover:underline">#{tag}</a>
-      ))}
-    </div>
-  )}
+  {
+    memo.tags.length > 0 && (
+      <div class="memo-tags mt-3 flex flex-wrap gap-2">
+        {memo.tags.map((tag) => (
+          <a href={`/search/result?q=%23${encodeURIComponent(tag)}`} class="text-sm text-[var(--link)] hover:underline">
+            #{tag}
+          </a>
+        ))}
+      </div>
+    )
+  }
 
   <footer class="memo-footer mt-4 flex items-center gap-4 text-sm text-[var(--text-muted)]">
     <a href={publicUrl} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--link)]">
@@ -1288,14 +1344,25 @@ const publicUrl = getMemoPublicUrl(instanceUrl, memo.shortId)
   </footer>
 </article>
 
-{images.slice(0, 4).map((img, idx) => (
-  <div popover id={`lightbox-${memo.shortId}-${idx}`} class="memo-lightbox fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4">
-    <button type="button" popovertarget={`lightbox-${memo.shortId}-${idx}`} popovertargetaction="hide" class="absolute right-4 top-4 text-white">
-      <Icon name="ri:close-line" class="h-8 w-8" />
-    </button>
-    <img src={img.externalLink} alt={img.filename} class="max-h-full max-w-full object-contain" />
-  </div>
-))}
+{
+  images.slice(0, 4).map((img, idx) => (
+    <div
+      popover
+      id={`lightbox-${memo.shortId}-${idx}`}
+      class="memo-lightbox fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
+    >
+      <button
+        type="button"
+        popovertarget={`lightbox-${memo.shortId}-${idx}`}
+        popovertargetaction="hide"
+        class="absolute right-4 top-4 text-white"
+      >
+        <Icon name="ri:close-line" class="h-8 w-8" />
+      </button>
+      <img src={img.externalLink} alt={img.filename} class="max-h-full max-w-full object-contain" />
+    </div>
+  ))
+}
 ```
 
 注意：需要确认 `formatRelativeTime` 已存在于 `src/lib/post-ui.ts` 或创建它。
@@ -1312,23 +1379,27 @@ const publicUrl = getMemoPublicUrl(instanceUrl, memo.shortId)
 
 ```ts
 export function formatRelativeTime(iso: string): string {
-  const date = new Date(iso);
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
-  const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
+  const date = new Date(iso)
+  const now = new Date()
+  const diff = now.getTime() - date.getTime()
+  const seconds = Math.floor(diff / 1000)
+  const minutes = Math.floor(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+  const days = Math.floor(hours / 24)
 
-  if (seconds < 60) return "刚刚";
-  if (minutes < 60) return `${minutes}分钟前`;
-  if (hours < 24) return `${hours}小时前`;
-  if (days < 30) return `${days}天前`;
-  return date.toLocaleDateString("zh-CN", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
+  if (seconds < 60)
+    return '刚刚'
+  if (minutes < 60)
+    return `${minutes}分钟前`
+  if (hours < 24)
+    return `${hours}小时前`
+  if (days < 30)
+    return `${days}天前`
+  return date.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
 }
 ```
 
@@ -1360,19 +1431,22 @@ const { memos, instanceUrl, nextPageToken, title } = Astro.props
 <div class="memos-page">
   {title && <h1 class="mb-6 text-2xl font-bold text-[var(--text)]">{title}</h1>}
   <div class="memos-list space-y-8">
-    {memos.map(memo => (
-      <MemoEntry memo={memo} instanceUrl={instanceUrl} />
-    ))}
+    {memos.map((memo) => <MemoEntry memo={memo} instanceUrl={instanceUrl} />)}
   </div>
 
   <nav class="memo-pagination mt-10 flex justify-between">
-    {nextPageToken ? (
-      <a href={`/before/${nextPageToken}`} class="rounded-lg bg-[var(--bg-soft)] px-4 py-2 text-[var(--text)] hover:bg-[var(--bg-mute)]">
-        下一页 →
-      </a>
-    ) : (
-      <span class="text-[var(--text-muted)]">已经到底了</span>
-    )}
+    {
+      nextPageToken ? (
+        <a
+          href={`/before/${nextPageToken}`}
+          class="rounded-lg bg-[var(--bg-soft)] px-4 py-2 text-[var(--text)] hover:bg-[var(--bg-mute)]"
+        >
+          下一页 →
+        </a>
+      ) : (
+        <span class="text-[var(--text-muted)]">已经到底了</span>
+      )
+    }
   </nav>
 </div>
 ```
@@ -1400,9 +1474,11 @@ const { site } = Astro.props
 
 <header class="site-header">
   <div class="site-header-inner flex items-center gap-4">
-    {site.avatar && (
-      <img src={site.avatar} alt={site.title} class="h-16 w-16 rounded-full object-cover" loading="lazy" />
-    )}
+    {
+      site.avatar && (
+        <img src={site.avatar} alt={site.title} class="h-16 w-16 rounded-full object-cover" loading="lazy" />
+      )
+    }
     <div>
       <h1 class="text-xl font-bold text-[var(--text)]">{site.title}</h1>
       {site.description && <p class="text-sm text-[var(--text-muted)]">{site.description}</p>}
@@ -1421,7 +1497,7 @@ const { site } = Astro.props
 
 - [ ] **Step 1: 移除 Telegram 相关入口，保留搜索/标签/友链/Feed**
 
-保留 `/`、`/tags`、`/links`、`/rss.xml`、搜索框。移除 `TELEGRAM` 等社交链接（或移至 `social.ts` 处理）。
+保留 `/`、`/tags`、`/links`、`/rss.xml`、搜索框。移除 `TELEGRAM` 等社交链接（项目已不再维护社交链接配置）。
 
 ---
 
@@ -1553,25 +1629,39 @@ const publicUrl = getMemoPublicUrl(site.instanceUrl, memo.shortId)
 
     <section class="memo-comments mt-10">
       <h2 class="mb-4 text-lg font-bold text-[var(--text)]">评论</h2>
-      {comments.length === 0 ? (
-        <p class="text-[var(--text-muted)]">暂无评论</p>
-      ) : (
-        <div class="space-y-4">
-          {comments.map(comment => (
-            <div class="comment-item flex gap-3 rounded-lg bg-[var(--bg-soft)] p-4">
-              <CreatorAvatar creator={comment.creator} />
-              <div class="flex-1">
-                <div class="flex items-center gap-2">
-                  <span class="font-medium text-[var(--text)]">{comment.creator.displayName || comment.creator.username}</span>
-                  <time class="text-xs text-[var(--text-muted)]" datetime={comment.createTime}>{formatRelativeTime(comment.createTime)}</time>
+      {
+        comments.length === 0 ? (
+          <p class="text-[var(--text-muted)]">暂无评论</p>
+        ) : (
+          <div class="space-y-4">
+            {comments.map((comment) => (
+              <div class="comment-item flex gap-3 rounded-lg bg-[var(--bg-soft)] p-4">
+                <CreatorAvatar creator={comment.creator} />
+                <div class="flex-1">
+                  <div class="flex items-center gap-2">
+                    <span class="font-medium text-[var(--text)]">
+                      {comment.creator.displayName || comment.creator.username}
+                    </span>
+                    <time class="text-xs text-[var(--text-muted)]" datetime={comment.createTime}>
+                      {formatRelativeTime(comment.createTime)}
+                    </time>
+                  </div>
+                  <div
+                    class="comment-content mt-1 text-sm text-[var(--text)]"
+                    set:html={renderMarkdown(comment.content)}
+                  />
                 </div>
-                <div class="comment-content mt-1 text-sm text-[var(--text)]" set:html={renderMarkdown(comment.content)} />
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-      <a href={publicUrl} target="_blank" rel="noopener noreferrer" class="mt-6 inline-block text-sm text-[var(--link)] hover:underline">
+            ))}
+          </div>
+        )
+      }
+      <a
+        href={publicUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-6 inline-block text-sm text-[var(--link)] hover:underline"
+      >
         前往 Memos 原文评论 / 点赞 →
       </a>
     </section>
@@ -1611,7 +1701,12 @@ const site = await getSiteInfo()
   <SiteHeader site={site} />
   <SiteNavigation />
   <main class="mx-auto max-w-[680px] px-4 py-8">
-    <MemosPage memos={info.memos} instanceUrl={info.instanceUrl} nextPageToken={info.nextPageToken} title={q ? `搜索: ${q}` : undefined} />
+    <MemosPage
+      memos={info.memos}
+      instanceUrl={info.instanceUrl}
+      nextPageToken={info.nextPageToken}
+      title={q ? `搜索: ${q}` : undefined}
+    />
   </main>
   <SiteFooter />
 </BaseLayout>
@@ -1653,11 +1748,16 @@ const site = await getSiteInfo()
   <main class="mx-auto max-w-[680px] px-4 py-8">
     <h1 class="mb-6 text-2xl font-bold text-[var(--text)]">标签</h1>
     <div class="flex flex-wrap gap-3">
-      {tags.map(([tag, count]) => (
-        <a href={`/search/result?q=%23${encodeURIComponent(tag)}`} class="rounded-full bg-[var(--bg-soft)] px-4 py-2 text-[var(--text)] hover:bg-[var(--bg-mute)]">
-          #{tag} <span class="text-[var(--text-muted)]">({count})</span>
-        </a>
-      ))}
+      {
+        tags.map(([tag, count]) => (
+          <a
+            href={`/search/result?q=%23${encodeURIComponent(tag)}`}
+            class="rounded-full bg-[var(--bg-soft)] px-4 py-2 text-[var(--text)] hover:bg-[var(--bg-mute)]"
+          >
+            #{tag} <span class="text-[var(--text-muted)]">({count})</span>
+          </a>
+        ))
+      }
     </div>
   </main>
   <SiteFooter />
@@ -1704,21 +1804,34 @@ const applyUrl = getFriendLinkApplyUrl()
   <main class="mx-auto max-w-[680px] px-4 py-8">
     <h1 class="mb-6 text-2xl font-bold text-[var(--text)]">友情链接</h1>
     <div class="friend-links grid gap-4 sm:grid-cols-2">
-      {friends.map(friend => (
-        <a href={friend.link} target="_blank" rel="noopener noreferrer" class="friend-link-card flex items-center gap-3 rounded-lg border border-[var(--border)] p-4 hover:bg-[var(--bg-soft)]">
-          {friend.avatar && <img src={friend.avatar} alt={friend.name} class="h-12 w-12 rounded-full object-cover" loading="lazy" />}
-          <div class="min-w-0 flex-1">
-            <div class="font-medium text-[var(--text)]">{friend.name}</div>
-            {friend.description && <div class="truncate text-sm text-[var(--text-muted)]">{friend.description}</div>}
-          </div>
-        </a>
-      ))}
+      {
+        friends.map((friend) => (
+          <a
+            href={friend.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="friend-link-card flex items-center gap-3 rounded-lg border border-[var(--border)] p-4 hover:bg-[var(--bg-soft)]"
+          >
+            {friend.avatar && (
+              <img src={friend.avatar} alt={friend.name} class="h-12 w-12 rounded-full object-cover" loading="lazy" />
+            )}
+            <div class="min-w-0 flex-1">
+              <div class="font-medium text-[var(--text)]">{friend.name}</div>
+              {friend.description && <div class="truncate text-sm text-[var(--text-muted)]">{friend.description}</div>}
+            </div>
+          </a>
+        ))
+      }
     </div>
-    {applyUrl && (
-      <div class="mt-8">
-        <a href={applyUrl} target="_blank" rel="noopener noreferrer" class="text-[var(--link)] hover:underline">申请友链 →</a>
-      </div>
-    )}
+    {
+      applyUrl && (
+        <div class="mt-8">
+          <a href={applyUrl} target="_blank" rel="noopener noreferrer" class="text-[var(--link)] hover:underline">
+            申请友链 →
+          </a>
+        </div>
+      )
+    }
   </main>
   <SiteFooter />
 </BaseLayout>
@@ -1736,51 +1849,51 @@ const applyUrl = getFriendLinkApplyUrl()
 - [ ] **Step 1: 改用 Memos 数据**
 
 ```ts
+import type { APIContext } from 'astro'
 // rss.xml.ts
-import rss from "@astrojs/rss";
-import type { APIContext } from "astro";
-import { getMemosInfo } from "../lib/memos/index.ts";
-import { getSiteInfo } from "../lib/memos/instance.ts";
-import { buildFeedMemos } from "../lib/feed.ts";
+import rss from '@astrojs/rss'
+import { buildFeedMemos } from '../lib/feed.ts'
+import { getMemosInfo } from '../lib/memos/index.ts'
+import { getSiteInfo } from '../lib/memos/instance.ts'
 
 export async function GET(context: APIContext) {
-  const info = await getMemosInfo({ pageSize: 50 });
-  const site = await getSiteInfo();
-  const items = buildFeedMemos(info);
+  const info = await getMemosInfo({ pageSize: 50 })
+  const site = await getSiteInfo()
+  const items = buildFeedMemos(info)
   return rss({
     title: site.title,
     description: site.description,
     site: context.site?.toString() || site.instanceUrl,
-    items: items.map((item) => ({
+    items: items.map(item => ({
       title: item.title,
       pubDate: item.pubDate,
       description: item.snippet,
       link: item.link,
       content: item.content,
     })),
-  });
+  })
 }
 ```
 
 ```ts
 // rss.json.ts
-import type { APIContext } from "astro";
-import { getMemosInfo } from "../lib/memos/index.ts";
-import { getSiteInfo } from "../lib/memos/instance.ts";
-import { buildFeedMemos } from "../lib/feed.ts";
+import type { APIContext } from 'astro'
+import { buildFeedMemos } from '../lib/feed.ts'
+import { getMemosInfo } from '../lib/memos/index.ts'
+import { getSiteInfo } from '../lib/memos/instance.ts'
 
 export async function GET(context: APIContext) {
-  const info = await getMemosInfo({ pageSize: 50 });
-  const site = await getSiteInfo();
-  const items = buildFeedMemos(info);
+  const info = await getMemosInfo({ pageSize: 50 })
+  const site = await getSiteInfo()
+  const items = buildFeedMemos(info)
   return new Response(
     JSON.stringify({
-      version: "https://jsonfeed.org/version/1.1",
+      version: 'https://jsonfeed.org/version/1.1',
       title: site.title,
       description: site.description,
       home_page_url: context.site?.toString() || site.instanceUrl,
       feed_url: `${context.site?.toString() || site.instanceUrl}/rss.json`,
-      items: items.map((item) => ({
+      items: items.map(item => ({
         id: item.id,
         title: item.title,
         content_html: item.content,
@@ -1790,9 +1903,9 @@ export async function GET(context: APIContext) {
       })),
     }),
     {
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     },
-  );
+  )
 }
 ```
 
@@ -1809,24 +1922,24 @@ export async function GET(context: APIContext) {
 
 ```ts
 // sitemap.xml.ts
-import type { APIContext } from "astro";
-import { getMemosInfo } from "../lib/memos/index.ts";
+import type { APIContext } from 'astro'
+import { getMemosInfo } from '../lib/memos/index.ts'
 
 export async function GET(context: APIContext) {
-  const info = await getMemosInfo({ pageSize: 1000 });
-  const baseUrl = context.site?.toString() || "https://example.com";
+  const info = await getMemosInfo({ pageSize: 1000 })
+  const baseUrl = context.site?.toString() || 'https://example.com'
   const urls = info.memos
     .map(
-      (m) =>
+      m =>
         `<url><loc>${baseUrl}/posts/${m.shortId}</loc><lastmod>${m.updateTime}</lastmod></url>`,
     )
-    .join("");
+    .join('')
   return new Response(
     `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`,
     {
-      headers: { "Content-Type": "application/xml" },
+      headers: { 'Content-Type': 'application/xml' },
     },
-  );
+  )
 }
 ```
 
@@ -1843,28 +1956,28 @@ export async function GET(context: APIContext) {
 - [ ] **Step 1: 使用 SiteInfo**
 
 ```ts
-import type { APIContext } from "astro";
-import { getSiteInfo } from "../lib/memos/instance.ts";
+import type { APIContext } from 'astro'
+import { getSiteInfo } from '../lib/memos/instance.ts'
 
 export async function GET(context: APIContext) {
-  const site = await getSiteInfo();
-  const baseUrl = context.site?.toString() || site.instanceUrl;
+  const site = await getSiteInfo()
+  const baseUrl = context.site?.toString() || site.instanceUrl
   return new Response(
     JSON.stringify({
       name: site.title,
       short_name: site.title,
       start_url: baseUrl,
-      display: "standalone",
-      background_color: "#ffffff",
-      theme_color: "#ffffff",
+      display: 'standalone',
+      background_color: '#ffffff',
+      theme_color: '#ffffff',
       icons: site.avatar
-        ? [{ src: site.avatar, sizes: "192x192", type: "image/png" }]
+        ? [{ src: site.avatar, sizes: '192x192', type: 'image/png' }]
         : [],
     }),
     {
-      headers: { "Content-Type": "application/manifest+json" },
+      headers: { 'Content-Type': 'application/manifest+json' },
     },
-  );
+  )
 }
 ```
 

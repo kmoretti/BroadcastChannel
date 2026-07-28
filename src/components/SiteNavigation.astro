@@ -1,4 +1,5 @@
 ---
+import { getBlogUrl } from '../lib/env.ts'
 import type { NavItem } from '../types'
 import SearchForm from './SearchForm.astro'
 
@@ -11,11 +12,12 @@ interface Props {
 
 const { currentPathname = Astro.url.pathname, googleSearchSite, navs = [], siteUrl = '' } = Astro.props
 
+const blogUrl = getBlogUrl()
 const primaryNavItems = [
   { href: `${siteUrl}/`, pathname: `${siteUrl}/`, title: 'Home' },
   { href: `${siteUrl}/tags`, pathname: `${siteUrl}/tags`, title: 'Tags' },
   { href: `${siteUrl}/links`, pathname: `${siteUrl}/links`, title: 'Links' },
-  { href: `${siteUrl}/rss.xml`, pathname: `${siteUrl}/rss.xml`, title: 'RSS' },
+  ...(blogUrl ? [{ href: blogUrl, pathname: blogUrl, title: 'Blog', external: true }] : []),
 ]
 ---
 
@@ -24,7 +26,13 @@ const primaryNavItems = [
     {
       primaryNavItems.map((nav) => (
         <li>
-          <a href={nav.href} title={nav.title} aria-current={currentPathname === nav.pathname ? 'page' : undefined}>
+          <a
+            href={nav.href}
+            title={nav.title}
+            aria-current={currentPathname === nav.pathname ? 'page' : undefined}
+            target={'external' in nav ? '_blank' : undefined}
+            rel={'external' in nav ? 'noopener noreferrer' : undefined}
+          >
             {nav.title}
           </a>
         </li>

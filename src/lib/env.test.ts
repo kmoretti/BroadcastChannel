@@ -1,13 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
-  getBooleanEnv,
   getEnv,
   getFriendLinkApiUrl,
   getMemosApiUrl,
   getMemosCreators,
   getMemosPageSize,
-  parseCsvList,
-  parseDelimitedItems,
 } from './env'
 
 describe('getEnv', () => {
@@ -44,30 +41,6 @@ describe('getEnv', () => {
         'TEST_ENV_PRIORITY',
       ),
     ).toBe('import-value')
-  })
-})
-
-describe('getBooleanEnv', () => {
-  afterEach(() => {
-    vi.unstubAllEnvs()
-  })
-
-  it.each([
-    ['true', true],
-    ['1', true],
-    ['false', false],
-    ['0', false],
-    ['', false],
-  ])('parses %j as %s', (value, expected) => {
-    vi.stubEnv('TEST_BOOLEAN_ENV', value)
-
-    expect(getBooleanEnv({}, 'TEST_BOOLEAN_ENV')).toBe(expected)
-  })
-
-  it('returns undefined when unset', () => {
-    vi.stubEnv('TEST_BOOLEAN_ENV', undefined)
-
-    expect(getBooleanEnv({}, 'TEST_BOOLEAN_ENV')).toBeUndefined()
   })
 })
 
@@ -124,19 +97,5 @@ describe('getFriendLinkApiUrl', () => {
     expect(getFriendLinkApiUrl({ FRIEND_LINK_API_URL: 'https://links.example/' })).toBe(
       'https://links.example/',
     )
-  })
-})
-
-describe('env parsing helpers', () => {
-  it('parses semicolon-delimited nav items and ignores empty entries', () => {
-    expect(parseDelimitedItems('Home,/; ; Blog,/blog; Invalid; About,/about')).toEqual([
-      { title: 'Home', href: '/' },
-      { title: 'Blog', href: '/blog' },
-      { title: 'About', href: '/about' },
-    ])
-  })
-
-  it('parses comma-delimited lists and ignores empty entries', () => {
-    expect(parseCsvList('alpha, , beta,, gamma ')).toEqual(['alpha', 'beta', 'gamma'])
   })
 })

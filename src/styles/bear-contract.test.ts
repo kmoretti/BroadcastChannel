@@ -3,17 +3,13 @@ import { describe, expect, it } from 'vitest'
 
 const theme = readFileSync(new URL('./app/theme.css', import.meta.url), 'utf8')
 const base = readFileSync(new URL('./app/base.css', import.meta.url), 'utf8')
-const feed = readFileSync(new URL('./app/feed.css', import.meta.url), 'utf8')
 const typography = readFileSync(new URL('./content/typography.css', import.meta.url), 'utf8')
 const syntax = readFileSync(new URL('./content/syntax.css', import.meta.url), 'utf8')
 const sepia = readFileSync(new URL('../../public/themes/sepia.css', import.meta.url), 'utf8')
 const aria = readFileSync(new URL('../../public/themes/aria.css', import.meta.url), 'utf8')
 const terminal = readFileSync(new URL('../../public/themes/terminal-base.css', import.meta.url), 'utf8')
 const hnNews = readFileSync(new URL('../../public/themes/hn-news.css', import.meta.url), 'utf8')
-const tgChannel = readFileSync(new URL('../../public/themes/tg-channel.css', import.meta.url), 'utf8')
 const zae = readFileSync(new URL('../../public/themes/zae.css', import.meta.url), 'utf8')
-const postEntry = readFileSync(new URL('../components/PostEntry.astro', import.meta.url), 'utf8')
-const postsPage = readFileSync(new URL('../components/PostsPage.astro', import.meta.url), 'utf8')
 
 const bearVariables = [
   '--width',
@@ -64,10 +60,9 @@ describe('bear CSS contract', () => {
     expect(css).toContain('padding-block: 20px; padding-inline: var(--body-padding-inline);')
   })
 
-  it('limits the default visited color to feed post metadata', () => {
+  it('limits the default visited color to links', () => {
     expect(compact(base)).toContain('a:link, a:visited { color: var(--link-color); }')
     expect(compact(base)).not.toContain('a:visited { color: var(--visited-color); }')
-    expect(compact(feed)).toContain('body.feed .post-meta a:visited { color: var(--visited-color); }')
   })
 
   it('keeps Bear inline and highlighted code geometry', () => {
@@ -92,7 +87,7 @@ describe('bear CSS contract', () => {
   })
 
   it('loads fixed-light themes with the key Bear variables', () => {
-    for (const css of [hnNews, tgChannel, zae]) {
+    for (const css of [hnNews, zae]) {
       expect(css).toMatch(/color-scheme:\s*light;/)
       expect(css).not.toMatch(/color-scheme:\s*light\s+dark;/)
 
@@ -103,24 +98,11 @@ describe('bear CSS contract', () => {
   })
 
   it('keeps fixed-light theme padding tokens aligned with body padding', () => {
-    for (const css of [hnNews, tgChannel, zae]) {
+    for (const css of [hnNews, zae]) {
       expect(css.match(/--body-padding-inline: 0px;/g)).toHaveLength(1)
     }
 
     expect(compact(hnNews)).toContain('padding: 0 0 1rem;')
-    expect(compact(tgChannel)).toContain('padding: 0 var(--body-padding-inline);')
     expect(compact(zae)).toContain('padding: 0 0 2rem;')
-  })
-
-  it('keeps optional feed hooks hidden in Base', () => {
-    expect(compact(feed)).toContain('.hn-story, .post-entry-avatar, .post-entry-author, .tg-message-meta { display: none; }')
-  })
-
-  it('wires optional feed hooks to real channel data', () => {
-    for (const className of ['hn-story', 'post-entry-avatar', 'post-entry-author', 'tg-message-meta']) {
-      expect(postEntry).toContain(`class="${className}"`)
-    }
-
-    expect(compact(postsPage)).toContain('channelAvatar={channel.avatar} channelTitle={channel.title}')
   })
 })

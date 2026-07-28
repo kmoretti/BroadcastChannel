@@ -11,6 +11,7 @@ function createContext(request?: Request) {
   return {
     request: req,
     url: new URL(req.url),
+    locals: {},
     redirect: vi.fn((path: string, status: number) => new Response('', { status, headers: { Location: path } })),
   } as unknown as Parameters<typeof onRequest>[0]
 }
@@ -32,7 +33,7 @@ describe('middleware', () => {
     const response = await onRequest(context, next)
 
     expect(response).toBeInstanceOf(Response)
-    expect((response as Response).headers.get('Speculation-Rules')).toBe('/rules/prefetch.json')
+    expect((response as Response).headers.get('Speculation-Rules')).toBe('"/rules/prefetch.json"')
     expect((response as Response).headers.get('Cache-Control')).toBe('public, max-age=300, s-maxage=300')
   })
 

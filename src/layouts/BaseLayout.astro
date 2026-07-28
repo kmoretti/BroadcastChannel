@@ -69,9 +69,9 @@ const skipLinkText = 'Skip to main content'
       ;(function () {
         const stored = localStorage.getItem('theme')
         const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-        if (stored ? stored === 'dark' : systemDark) {
-          document.documentElement.classList.add('dark')
-        }
+        const isDark = stored ? stored === 'dark' : systemDark
+        document.documentElement.classList.toggle('dark', isDark)
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isDark ? '#0f172a' : '#ffffff')
       })()
     </script>
     <Fragment set:html={HEADER_INJECT} />

@@ -32,10 +32,11 @@ const applyUrl = getFriendLinkApplyUrl()
 
 <BaseLayout title={`友链 - ${site.title}`}>
   <Fragment slot="header">
-    <SiteHeader site={site} />
-    <SiteNavigation />
+    <SiteHeader site={site}>
+      <SiteNavigation />
+    </SiteHeader>
   </Fragment>
-  <div class="mx-auto max-w-[680px] px-4 py-8">
+  <div class="mx-auto max-w-[680px] px-4 pt-1 pb-8">
     <h1 class="mb-6 text-2xl font-bold text-[var(--text)]">友情链接</h1>
     <div class="friend-links grid gap-4 sm:grid-cols-2">
       {

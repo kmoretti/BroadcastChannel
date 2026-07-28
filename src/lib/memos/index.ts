@@ -1,6 +1,8 @@
 import type { Memo, MemoComment, MemoInfo } from '../../types.ts'
-import { getMemosPageSize } from '../env.ts'
+import { getMemosApiUrl, getMemosPageSize } from '../env.ts'
 import * as cache from './cache.ts'
+import { enrichCreators } from './creators.ts'
+import { inferInstanceUrl } from './instance.ts'
 import { buildMemoInfo, parseComment, parseMemo } from './parse.ts'
 import { formatFileSize, getMemoPublicUrl, getOpenStreetMapUrl, groupAttachments } from './render.ts'
 
@@ -11,7 +13,10 @@ export async function getMemosInfo(params: { pageSize?: number, pageToken?: stri
   const response = params.q
     ? await cache.getCachedSearchMemos(params.q, queryParams)
     : await cache.getCachedListMemos(queryParams)
-  return buildMemoInfo(response, instance.instanceUrl)
+  const instanceUrl = instance.instanceUrl || inferInstanceUrl(getMemosApiUrl())
+  const info = buildMemoInfo(response, instanceUrl)
+  await enrichCreators(info.memos, instanceUrl)
+  return info
 }
 
 function normalizeMemoId(id: string): string {
@@ -20,12 +25,15 @@ function normalizeMemoId(id: string): string {
 
 export async function getMemoById(id: string): Promise<{ memo: Memo, comments: MemoComment[] }> {
   const normalizedId = normalizeMemoId(id)
-  const [rawMemo, rawComments] = await Promise.all([
+  const [rawMemo, rawComments, instance] = await Promise.all([
     cache.getCachedGetMemo(normalizedId),
     cache.getCachedListComments(normalizedId, { pageSize: 100 }),
+    cache.getCachedInstanceProfile(),
   ])
   const memo = parseMemo(rawMemo)
   const comments = (rawComments.memos || []).map(parseComment)
+  const instanceUrl = instance.instanceUrl || inferInstanceUrl(getMemosApiUrl())
+  await enrichCreators([memo, ...comments], instanceUrl)
   return { memo, comments }
 }
 

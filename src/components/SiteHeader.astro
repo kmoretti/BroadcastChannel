@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components'
 import type { SiteInfo } from '../lib/memos/instance.ts'
 
 interface Props {
@@ -6,18 +7,74 @@ interface Props {
 }
 
 const { site } = Astro.props
+const { social } = site
+
+const isImageUrl = (value: string | undefined): boolean => {
+  if (!value) return false
+  return /^https?:\/\//i.test(value)
+}
+
+const socialItems = [
+  {
+    key: 'rss',
+    href: social.rss,
+    label: 'RSS Feed',
+    icon: 'ri:rss-line',
+    rel: 'alternate noopener noreferrer',
+    type: 'application/rss+xml',
+  },
+  { key: 'x', href: social.x, label: 'X/Twitter', icon: 'ri:twitter-x-line', rel: 'noopener noreferrer' },
+  { key: 'github', href: social.github, label: 'GitHub', icon: 'ri:github-line', rel: 'noopener noreferrer' },
+  { key: 'telegram', href: social.telegram, label: 'Telegram', icon: 'ri:telegram-line', rel: 'noopener noreferrer' },
+  { key: 'qq', href: social.qq, label: 'QQ', icon: 'ri:qq-line', rel: 'noopener noreferrer' },
+  { key: 'email', href: social.email, label: 'Email', icon: 'ri:mail-line', rel: 'noopener noreferrer' },
+  { key: 'bilibili', href: social.bilibili, label: 'Bilibili', icon: 'ri:bilibili-line', rel: 'noopener noreferrer' },
+].filter((item) => item.href)
 ---
 
 <header class="site-header">
-  <a href="/" class="site-header-inner flex items-center gap-4">
+  <div class="site-header-inner">
     {
-      site.avatar && (
-        <img src={site.avatar} alt={site.title} class="h-16 w-16 rounded-full object-cover" loading="lazy" />
+      (site.logo || site.avatar) && (
+        <a href="/" class="site-logo-link" title={site.title} aria-label={`Home — ${site.title}`}>
+          {isImageUrl(site.logo) ? (
+            <img src={site.logo} alt={site.title} class="site-logo-image" aria-hidden="true" />
+          ) : site.logo ? (
+            <span class="site-logo-badge" aria-hidden="true">
+              {site.logo}
+            </span>
+          ) : isImageUrl(site.avatar) ? (
+            <img src={site.avatar} alt={site.title} class="site-logo-image" aria-hidden="true" />
+          ) : (
+            <span class="site-logo-badge" aria-hidden="true">
+              {site.avatar}
+            </span>
+          )}
+        </a>
       )
     }
-    <div>
-      <h1 class="text-xl font-bold text-[var(--text)]">{site.title}</h1>
-      {site.description && <p class="text-sm text-[var(--text-muted)]">{site.description}</p>}
-    </div>
-  </a>
+    <a href="/" class="title" title={site.title}>
+      <h1>{site.title}</h1>
+    </a>
+    {
+      socialItems.length > 0 && (
+        <div class="social-links" role="group" aria-label="Channel links">
+          {socialItems.map((item) => (
+            <a
+              href={item.href}
+              title={item.label}
+              aria-label={item.label}
+              target="_blank"
+              rel={item.rel}
+              type={item.type}
+            >
+              <Icon name={item.icon} aria-hidden="true" />
+            </a>
+          ))}
+        </div>
+      )
+    }
+    {site.introHtml && <div class="channel-description content" set:html={site.introHtml} />}
+    <slot />
+  </div>
 </header>

@@ -1,22 +1,9 @@
 @layer components {
   @media (max-width: 37.5rem) {
-    .site-header {
+    .site-header-inner {
       grid-template-columns: auto minmax(0, 1fr);
       align-items: flex-start;
-    }
-
-    .site-header > .title > h1 {
-      font-size: 1.2em;
-    }
-
-    .channel-avatar {
-      width: 2.5rem;
-      height: 2.5rem;
-    }
-
-    .social-links {
-      grid-column: 1 / -1;
-      justify-self: start;
+      padding: 1.5rem 1rem 0.75rem;
     }
 
     .site-navigation {

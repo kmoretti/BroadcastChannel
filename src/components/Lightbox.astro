@@ -1,0 +1,229 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { MemoAttachment } from '../types.ts'
+
+interface Props {
+  images: MemoAttachment[]
+  memoId: string
+}
+
+const { images, memoId } = Astro.props
+const lightboxId = `lightbox-${memoId}`
+---
+
+<div
+  id={lightboxId}
+  class="memo-lightbox fixed inset-0 z-[100] hidden items-center justify-center"
+  role="dialog"
+  aria-modal="true"
+  aria-label="图片预览"
+  data-images={JSON.stringify(images)}
+>
+  <div class="lightbox-backdrop absolute inset-0 bg-black/90" data-close></div>
+
+  <button
+    type="button"
+    class="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] shadow-lg transition hover:bg-[var(--bg-mute)]"
+    data-close
+    aria-label="关闭"
+  >
+    <Icon name="ri:close-line" class="h-6 w-6" />
+  </button>
+
+  <button
+    type="button"
+    class="absolute left-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] shadow-lg transition hover:bg-[var(--bg-mute)]"
+    data-prev
+    aria-label="上一张"
+  >
+    <Icon name="ri:arrow-left-s-line" class="h-6 w-6" />
+  </button>
+
+  <button
+    type="button"
+    class="absolute right-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] shadow-lg transition hover:bg-[var(--bg-mute)]"
+    data-next
+    aria-label="下一张"
+  >
+    <Icon name="ri:arrow-right-s-line" class="h-6 w-6" />
+  </button>
+
+  <div class="relative z-0 flex h-full w-full items-center justify-center p-4">
+    <img
+      src=""
+      alt=""
+      class="lightbox-img max-h-full max-w-full object-contain opacity-0 transition-opacity duration-200"
+      loading="lazy"
+    />
+  </div>
+
+  <div
+    class="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-[var(--text)] shadow-lg"
+  >
+    <span class="lightbox-counter text-sm"></span>
+  </div>
+</div>
+
+<script>
+  function initLightbox() {
+    if (typeof document === 'undefined') {
+      return
+    }
+
+    function getActiveLightbox() {
+      return document.querySelector('.memo-lightbox.is-open')
+    }
+
+    document.querySelectorAll('.memo-lightbox').forEach((lb) => {
+      const imagesJson = lb.getAttribute('data-images')
+      const images = imagesJson ? JSON.parse(imagesJson) : []
+      if (!Array.isArray(images) || images.length === 0) {
+        return
+      }
+
+      const img = lb.querySelector('.lightbox-img')
+      const counter = lb.querySelector('.lightbox-counter')
+      let currentIndex = 0
+      let touchStartX = 0
+      const transitionDuration = 200
+
+      function updateCounter() {
+        if (counter) {
+          counter.textContent = `${currentIndex + 1} / ${images.length}`
+        }
+      }
+
+      function setImage(index, animate) {
+        currentIndex = ((index % images.length) + images.length) % images.length
+        const item = images[currentIndex]
+        if (!item || !img) {
+          return
+        }
+
+        const apply = () => {
+          img.src = item.externalLink
+          img.alt = item.filename || ''
+          updateCounter()
+          if (animate) {
+            requestAnimationFrame(() => {
+              img.style.opacity = '1'
+            })
+          }
+        }
+
+        if (animate && img.style.opacity === '1') {
+          img.style.opacity = '0'
+          setTimeout(apply, transitionDuration)
+          return
+        }
+        apply()
+      }
+
+      function open(index) {
+        setImage(index, false)
+        lb.classList.remove('hidden')
+        lb.classList.add('is-open')
+        document.body.classList.add('lightbox-open')
+        requestAnimationFrame(() => {
+          if (img) {
+            img.style.opacity = '1'
+          }
+        })
+      }
+
+      function close() {
+        lb.classList.remove('is-open')
+        document.body.classList.remove('lightbox-open')
+        if (img) {
+          img.style.opacity = '0'
+        }
+        setTimeout(() => {
+          lb.classList.add('hidden')
+        }, transitionDuration)
+      }
+
+      function next() {
+        setImage(currentIndex + 1, true)
+      }
+
+      function prev() {
+        setImage(currentIndex - 1, true)
+      }
+
+      document.querySelectorAll(`[data-lightbox="${lb.id}"]`).forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          const index = Number.parseInt(trigger.getAttribute('data-index') || '0', 10)
+          open(index)
+        })
+      })
+
+      lb.querySelectorAll('[data-close]').forEach((el) => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation()
+          close()
+        })
+      })
+
+      lb.querySelector('[data-prev]')?.addEventListener('click', (e) => {
+        e.stopPropagation()
+        prev()
+      })
+
+      lb.querySelector('[data-next]')?.addEventListener('click', (e) => {
+        e.stopPropagation()
+        next()
+      })
+
+      lb.addEventListener(
+        'touchstart',
+        (e) => {
+          touchStartX = e.changedTouches[0].screenX
+        },
+        { passive: true },
+      )
+
+      lb.addEventListener(
+        'touchend',
+        (e) => {
+          const touchEndX = e.changedTouches[0].screenX
+          const diff = touchEndX - touchStartX
+          if (Math.abs(diff) <= 50) {
+            return
+          }
+          if (diff < 0) {
+            next()
+            return
+          }
+          prev()
+        },
+        { passive: true },
+      )
+    })
+
+    document.addEventListener('keydown', (e) => {
+      const lb = getActiveLightbox()
+      if (!lb) {
+        return
+      }
+      if (e.key === 'Escape') {
+        lb.querySelector('[data-close]')?.dispatchEvent(new Event('click'))
+        return
+      }
+      if (e.key === 'ArrowLeft') {
+        lb.querySelector('[data-prev]')?.dispatchEvent(new Event('click'))
+        return
+      }
+      if (e.key === 'ArrowRight') {
+        lb.querySelector('[data-next]')?.dispatchEvent(new Event('click'))
+      }
+    })
+  }
+
+  initLightbox()
+</script>
+
+<style>
+  :global(body.lightbox-open) {
+    overflow: hidden;
+  }
+</style>

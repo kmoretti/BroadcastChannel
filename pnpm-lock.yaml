@@ -90,9 +90,6 @@ importers:
       prismjs:
         specifier: ^1.30.0
         version: 1.30.0
-      prismjs-components-importer:
-        specifier: ^0.2.0
-        version: 0.2.0(prismjs@1.30.0)
       sanitize-html:
         specifier: 2.17.5
         version: 2.17.5
@@ -5309,11 +5306,6 @@ packages:
     resolution: {integrity: sha512-N2MylSdi48+5N/6S5j+maeHbUSIzzZ5uOcX5Hm4QpV8Dkb1HFjfAKTKX6yNPJQD9AhcT3ifHNB66tWTTJDi11Q==}
     engines: {node: '>=14'}
     hasBin: true
-
-  prismjs-components-importer@0.2.0:
-    resolution: {integrity: sha512-2WJBqocATZOOoApIH9y6QmZG7dkQsX9BKexbW6LjMZ9QBAxoDsmoAKTzOt3g9xgpTQVEydmkS4I4tSlguJ52Kg==}
-    peerDependencies:
-      prismjs: 1.28.0
 
   prismjs@1.30.0:
     resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
@@ -12270,10 +12262,6 @@ snapshots:
       sass-formatter: 0.7.9
 
   prettier@3.8.4: {}
-
-  prismjs-components-importer@0.2.0(prismjs@1.30.0):
-    dependencies:
-      prismjs: 1.30.0
 
   prismjs@1.30.0: {}
 

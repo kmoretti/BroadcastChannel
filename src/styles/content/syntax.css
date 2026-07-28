@@ -15,13 +15,16 @@
     padding: 0;
   }
 
-  .content pre.code {
+  .memo-content pre.code,
+  .comment-content pre.code {
     margin-block: 1em;
     padding: 1px 15px;
   }
 
-  .content pre[class*='language-'],
-  .content code[class*='language-'] {
+  .memo-content pre[class*='language-'],
+  .comment-content pre[class*='language-'],
+  .memo-content code[class*='language-'],
+  .comment-content code[class*='language-'] {
     background: var(--code-background-color);
     color: var(--code-color);
     text-shadow: none;

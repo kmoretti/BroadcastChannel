@@ -1,5 +1,6 @@
 @layer components {
-  .content {
+  .memo-content,
+  .comment-content {
     @apply break-words;
 
     p {

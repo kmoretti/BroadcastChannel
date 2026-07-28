@@ -43,10 +43,11 @@ const publicUrl = getMemoPublicUrl(site.instanceUrl, memo.shortId)
   pageType="post"
 >
   <Fragment slot="header">
-    <SiteHeader site={site} />
-    <SiteNavigation />
+    <SiteHeader site={site}>
+      <SiteNavigation />
+    </SiteHeader>
   </Fragment>
-  <div class="mx-auto max-w-[680px] px-4 py-8">
+  <div class="mx-auto max-w-[680px] px-4 pt-1 pb-8">
     <MemoEntry memo={memo} instanceUrl={site.instanceUrl} />
 
     <section class="memo-comments mt-10">

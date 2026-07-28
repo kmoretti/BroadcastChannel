@@ -8,7 +8,10 @@ describe('site meta', () => {
       title: 'Site title',
       description: 'Site description',
       avatar: 'https://example.com/avatar.png',
+      logo: undefined,
       instanceUrl: 'https://memos.example/',
+      introHtml: '',
+      social: {},
     }
 
     expect(getSiteMeta(site)).toEqual({

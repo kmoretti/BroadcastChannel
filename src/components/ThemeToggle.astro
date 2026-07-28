@@ -12,27 +12,61 @@ import { Icon } from 'astro-icon/components'
 </button>
 
 <script is:inline>
+  // prettier-ignore
   ;(function () {
     const root = document.documentElement
-    const toggle = document.getElementById('theme-toggle')
-    const lightIcon = toggle?.querySelector('.theme-icon-light')
-    const darkIcon = toggle?.querySelector('.theme-icon-dark')
-    const stored = localStorage.getItem('theme')
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    const isDark = stored ? stored === 'dark' : systemDark
+    const storageKey = 'theme'
+
+    function getStoredTheme() {
+      try {
+        return localStorage.getItem(storageKey)
+      }
+      catch {
+        return null
+      }
+    }
 
     function applyTheme(dark) {
       root.classList.toggle('dark', dark)
+      const toggle = document.getElementById('theme-toggle')
+      const lightIcon = toggle?.querySelector('.theme-icon-light')
+      const darkIcon = toggle?.querySelector('.theme-icon-dark')
       lightIcon?.classList.toggle('hidden', dark)
       darkIcon?.classList.toggle('hidden', !dark)
+      const themeColor = document.querySelector('meta[name="theme-color"]')
+      if (themeColor)
+        themeColor.setAttribute('content', dark ? '#0f172a' : '#ffffff')
     }
 
-    applyTheme(isDark)
+    function initTheme() {
+      const stored = getStoredTheme()
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      applyTheme(stored ? stored === 'dark' : systemDark)
+    }
 
-    toggle?.addEventListener('click', () => {
+    function onToggleClick() {
       const dark = !root.classList.contains('dark')
       applyTheme(dark)
-      localStorage.setItem('theme', dark ? 'dark' : 'light')
-    })
+      try {
+        localStorage.setItem(storageKey, dark ? 'dark' : 'light')
+      }
+      catch {}
+    }
+
+    function setupToggle() {
+      const toggle = document.getElementById('theme-toggle')
+      if (!toggle)
+        return
+      toggle.removeEventListener('click', onToggleClick)
+      toggle.addEventListener('click', onToggleClick)
+    }
+
+    function init() {
+      initTheme()
+      setupToggle()
+    }
+
+    init()
+    document.addEventListener('astro:page-load', init)
   })()
 </script>

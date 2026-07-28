@@ -4,18 +4,26 @@ import MemoEntry from './MemoEntry.astro'
 
 interface Props {
   memos: Memo[]
-  instanceUrl: string
   nextPageToken?: string
   title?: string
 }
 
-const { memos, instanceUrl, nextPageToken, title } = Astro.props
+const { memos, nextPageToken, title } = Astro.props
 ---
 
 <div class="memos-page">
   {title && <h1 class="mb-6 text-2xl font-bold text-[var(--text)]">{title}</h1>}
   <div class="memos-list space-y-8">
-    {memos.map((memo) => <MemoEntry memo={memo} instanceUrl={instanceUrl} />)}
+    {
+      memos.map((memo) => (
+        <div class="memo-list-item">
+          <MemoEntry memo={memo} />
+          <a href={`/posts/${memo.shortId}`} class="mt-2 inline-block text-sm text-[var(--link)] hover:underline">
+            查看详情 →
+          </a>
+        </div>
+      ))
+    }
   </div>
 
   <nav class="memo-pagination mt-10 flex justify-between">

@@ -27,36 +27,32 @@
 - Small code change: `pnpm eslint <changed-file>`, `pnpm typecheck`, and `pnpm test`; run `pnpm lint` if scope widened.
 - UI or route change: `pnpm lint`, `pnpm build`, then preview/manual check.
 - Feed/SEO/sitemap changes: manually verify `/rss.xml`, `/rss.json`, `/sitemap.xml`, and relevant canonical/meta output in preview.
-- Telegram parsing or proxy changes: verify home, one `/posts/[id]` page, RSS output, and a `/static/...` asset path.
+- Memos API or Markdown rendering changes: verify home, one `/posts/[id]` page, RSS output, and asset rendering.
 - Build config or adapter changes must finish with `pnpm build`.
 
 ## Architecture notes
 
-- `src/pages/` contains Astro pages and API-style routes; `src/pages/index.astro` is intentionally thin and calls `getChannelInfo()`.
+- `src/pages/` contains Astro pages and API-style routes; `src/pages/index.astro` is intentionally thin and calls `getMemosInfo()`.
 - `src/layouts/BaseLayout.astro` wires global CSS, `astro-seo`, the site header/navigation, RSS links, `HEADER_INJECT`, and `FOOTER_INJECT`.
 - `src/middleware.ts` sets `SITE_URL`/`RSS_URL` locals, handles legacy `#tag` search rewrites, and adds speculation/cache headers.
-- Telegram fetching/parsing belongs in `src/lib/telegram/**`; request caching uses `ocache` with 5 min max age, SWR enabled, and 1 hour stale max age.
+- Memos fetching/parsing belongs in `src/lib/memos/**`; request caching uses `ocache` with 5 min max age.
 - Shared env helpers are in `src/lib/env.ts`; runtime `process.env` wins over build-time `import.meta.env`, and they do not read `Astro.locals.runtime.env`.
-- Static proxy logic is shared in `src/lib/static-proxy.ts`; both Astro route `src/pages/static/[...url].ts` and Vercel Edge Function `api/static/index.ts` use it, with `/static/:path*` rewritten by `vercel.json`.
-- Do not broaden the static proxy target whitelist unless the task explicitly changes the security model.
 - Keep shared domain interfaces in `src/types.ts`; there are no TS path aliases, so use relative imports.
 
 ## Env and deployment gotchas
 
-- `CHANNEL` is required server-side; missing it throws during Telegram fetch.
-- `TELEGRAM_HOST` defaults in code to `telegram.me`; `.env.example` uses `telegram.dog` as an override example.
-- `STATIC_PROXY` defaults to `/static/` only when unset; set it to an empty string for direct Telegram asset URLs.
+- `MEMOS_API_URL` is required server-side; missing it falls back to the example instance and may throw if unreachable.
 - `astro.config.mjs` selects adapters for Vercel, Cloudflare Workers, Netlify, Node standalone, and EdgeOne; `SERVER_ADAPTER` overrides auto-detection, and Cloudflare Pages is explicitly rejected.
 - EdgeOne is detected from std-env's `edgeone_pages` provider or platform-provided `EDGEONE_PROJECT_ID`/`EO_MAKERS`; `DOCKER=true` changes Vite SSR `noExternal` behavior.
 - If env behavior changes, update `.env.example` and README docs together.
 
 ## Code and content conventions
 
-- Server-rendered HTML is the default; keep browser JS near zero. Telegram comments are the deliberate exception.
+- Server-rendered HTML is the default; keep browser JS near zero.
 - API-style routes must return `Response`/`Response.json`, not Express-like objects.
 - Follow ESLint formatting: 2 spaces, LF, UTF-8, single quotes, usually no semicolons; let `pnpm lint:fix` settle import order.
 - Preserve local naming: Astro components and layouts use `PascalCase.astro`; pages follow Astro route syntax.
-- External Telegram HTML must be sanitized via `src/lib/sanitize.ts` before `set:html`; config injections in `BaseLayout.astro` are the only intentional raw HTML path.
+- Markdown-rendered HTML must be sanitized via `src/lib/sanitize.ts` before `set:html`; config injections in `BaseLayout.astro` are the only intentional raw HTML path.
 - Design changes should preserve the content-first Base contract from `DESIGN.md`; Sepia is an optional warm-paper override, not the default. Avoid card-heavy redesigns unless explicitly requested.
 
 ## Cloned Dependency Source

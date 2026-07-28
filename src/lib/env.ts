@@ -1,8 +1,4 @@
-import type { NavItem } from '../types'
-
 type Env = Record<string, string | undefined>
-
-export const DEFAULT_TELEGRAM_HOST = 'telegram.me'
 
 function getProcessEnv(name: string): string | undefined {
   return (Reflect.get(globalThis, 'process') as { env?: Env } | undefined)?.env?.[name]
@@ -12,62 +8,20 @@ function getProcessEnv(name: string): string | undefined {
  * Runtime envs must win over Vite's build-time import.meta.env values.
  */
 export function getEnv(env: Env | undefined, name: string): string | undefined {
-  return getProcessEnv(name) ?? env?.[name]
-}
-
-export function getStaticProxy(env: Env): string {
-  return getEnv(env, 'STATIC_PROXY') ?? '/static/'
-}
-
-export function getTelegramHost(env: Env): string {
-  return getEnv(env, 'TELEGRAM_HOST') ?? DEFAULT_TELEGRAM_HOST
-}
-
-export function getTargetWhitelist(env: Env | undefined): string[] {
-  const hostnames = parseCsvList(getEnv(env, 'TARGET_WHITELIST'))
-    .map(hostname => hostname.toLowerCase())
-    .filter(isValidHostname)
-
-  return [...new Set(hostnames)]
-}
-
-export function getBooleanEnv(env: Env, name: string): boolean | undefined {
-  const value = getEnv(env, name)
-  return value === undefined ? undefined : value === 'true' || value === '1'
-}
-
-export function parseDelimitedItems(value = ''): NavItem[] {
-  return value
-    .split(';')
-    .map(item => item.trim())
-    .filter(Boolean)
-    .map((item) => {
-      const [title = '', href = ''] = item.split(',').map(part => part.trim())
-      return { title, href }
-    })
-    .filter(item => item.title.length > 0 && item.href.length > 0)
-}
-
-export function parseCsvList(value = ''): string[] {
-  return value
-    .split(',')
-    .map(item => item.trim())
-    .filter(Boolean)
-}
-
-function isValidHostname(hostname: string): boolean {
-  if (hostname.length > 253 || !hostname.includes('.'))
-    return false
-
-  const labels = hostname.split('.')
-  if (labels.every(label => /^\d+$/.test(label)))
-    return false
-
-  return labels.every(label => /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label))
+  return getProcessEnv(name) ?? env?.[name] ?? getViteEnv()?.[name]
 }
 
 function getRuntimeEnv(): Record<string, string | undefined> {
   return (Reflect.get(globalThis, 'process') as { env?: Record<string, string | undefined> } | undefined)?.env ?? {}
+}
+
+function getViteEnv(): Env | undefined {
+  try {
+    return (import.meta as { env?: Env }).env
+  }
+  catch {
+    return undefined
+  }
 }
 
 export function getMemosApiUrl(
@@ -113,6 +67,24 @@ export function getMemosAvatar(
   return getEnv(env, 'MEMOS_AVATAR')
 }
 
+export function getMemosLogo(
+  env: Record<string, string | undefined> = getRuntimeEnv(),
+): string | undefined {
+  return getEnv(env, 'MEMOS_LOGO')
+}
+
+export function getMemosCreatorName(
+  env: Record<string, string | undefined> = getRuntimeEnv(),
+): string | undefined {
+  return getEnv(env, 'MEMOS_CREATOR_NAME')
+}
+
+export function getMemosCreatorAvatar(
+  env: Record<string, string | undefined> = getRuntimeEnv(),
+): string | undefined {
+  return getEnv(env, 'MEMOS_CREATOR_AVATAR')
+}
+
 export function getFriendLinkApiUrl(
   env: Record<string, string | undefined> = getRuntimeEnv(),
 ): string {
@@ -123,4 +95,52 @@ export function getFriendLinkApplyUrl(
   env: Record<string, string | undefined> = getRuntimeEnv(),
 ): string | undefined {
   return getEnv(env, 'FRIEND_LINK_APPLY_URL')
+}
+
+export function getSocialRssUrl(
+  env: Record<string, string | undefined> = getRuntimeEnv(),
+): string | undefined {
+  return getEnv(env, 'SOCIAL_RSS_URL') || '/rss.xml'
+}
+
+export function getSocialXUrl(
+  env: Record<string, string | undefined> = getRuntimeEnv(),
+): string | undefined {
+  return getEnv(env, 'SOCIAL_X_URL')
+}
+
+export function getSocialGithubUrl(
+  env: Record<string, string | undefined> = getRuntimeEnv(),
+): string | undefined {
+  return getEnv(env, 'SOCIAL_GITHUB_URL')
+}
+
+export function getSocialTelegramUrl(
+  env: Record<string, string | undefined> = getRuntimeEnv(),
+): string | undefined {
+  return getEnv(env, 'SOCIAL_TELEGRAM_URL')
+}
+
+export function getSocialQqUrl(
+  env: Record<string, string | undefined> = getRuntimeEnv(),
+): string | undefined {
+  return getEnv(env, 'SOCIAL_QQ_URL')
+}
+
+export function getSocialEmailUrl(
+  env: Record<string, string | undefined> = getRuntimeEnv(),
+): string | undefined {
+  return getEnv(env, 'SOCIAL_EMAIL_URL')
+}
+
+export function getSocialBilibiliUrl(
+  env: Record<string, string | undefined> = getRuntimeEnv(),
+): string | undefined {
+  return getEnv(env, 'SOCIAL_BILIBILI_URL')
+}
+
+export function getBlogUrl(
+  env: Record<string, string | undefined> = getRuntimeEnv(),
+): string | undefined {
+  return getEnv(env, 'BLOG_URL')
 }

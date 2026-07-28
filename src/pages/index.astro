@@ -12,10 +12,11 @@ const site = await getSiteInfo()
 
 <BaseLayout title={site.title} description={site.description}>
   <Fragment slot="header">
-    <SiteHeader site={site} />
-    <SiteNavigation />
+    <SiteHeader site={site}>
+      <SiteNavigation />
+    </SiteHeader>
   </Fragment>
-  <div class="mx-auto max-w-[680px] px-4 py-8">
-    <MemosPage memos={info.memos} instanceUrl={info.instanceUrl} nextPageToken={info.nextPageToken} />
+  <div class="mx-auto max-w-[680px] px-4 pt-1 pb-8">
+    <MemosPage memos={info.memos} nextPageToken={info.nextPageToken} />
   </div>
 </BaseLayout>

@@ -1,10 +1,16 @@
 import type { APIContext } from 'astro'
 import { getSiteInfo, resolveSiteUrl } from '../lib/memos/instance.ts'
 
+function isImageUrl(value: string | undefined): boolean {
+  if (!value)
+    return false
+  return /^https?:\/\//i.test(value)
+}
+
 export async function GET(context: APIContext) {
   const site = await getSiteInfo()
   const baseUrl = resolveSiteUrl(context.site, site)
-  const icons = site.avatar
+  const icons = isImageUrl(site.avatar)
     ? [{ src: site.avatar, sizes: '192x192', type: 'image/png' }]
     : [{ src: '/favicon.svg', sizes: '192x192', type: 'image/svg+xml' }]
   return new Response(JSON.stringify({

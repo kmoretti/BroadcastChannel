@@ -42,6 +42,8 @@ The optional `public/themes/aria.css` theme is visually inspired by [Aria Templa
 - Author and maintainer: Kai Bi ([ccbikai](https://github.com/ccbikai) / [miantiao-me](https://github.com/miantiao-me))
 - License: [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
+The dashed square-line grid background used in the default Base theme is adapted from the Aria theme's SquareLines implementation.
+
 ## HN News theme
 
 The optional `public/themes/hn-news.css` theme takes visual inspiration from the official [Hacker News](https://news.ycombinator.com/) website. It is an independent implementation for BroadcastChannel's DOM, not an adaptation of Hacker News source material. No Hacker News source code, CSS, fonts, or assets are copied or bundled.
@@ -50,17 +52,6 @@ The optional `public/themes/hn-news.css` theme takes visual inspiration from the
 - Copyright holder and operator: Y Combinator
 - License: N/A — no open-source license applies to the referenced website visual design
 - License URL: N/A (not applicable); official legal information: https://www.ycombinator.com/legal/
-- Nature: Visual inspiration; independent implementation, not adapted source
-
-## TG Channel theme
-
-The optional `public/themes/tg-channel.css` theme takes visual inspiration from Telegram's public channel preview, using [Broadcast Channel Blog](https://t.me/s/Broadcast_Channel_Blog) as the reference instance. It is an independent implementation for BroadcastChannel's DOM, not an adaptation of Telegram source material. No Telegram source code, CSS, fonts, or assets are copied or bundled.
-
-- Visual reference: https://t.me/s/Broadcast_Channel_Blog
-- Official public preview base: https://t.me/s/
-- Copyright holder: Telegram Messenger Inc.
-- License: N/A — no open-source license applies to the referenced public preview visual design
-- License URL: N/A (not applicable); official terms: https://telegram.org/tos
 - Nature: Visual inspiration; independent implementation, not adapted source
 
 ## ZAE theme

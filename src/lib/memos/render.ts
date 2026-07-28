@@ -1,4 +1,6 @@
 import type { MemoAttachment, MemoLocation } from '../../types.ts'
+import { getMemosApiUrl } from '../env.ts'
+import { inferInstanceUrl } from './instance.ts'
 
 export interface GroupedAttachments {
   images: MemoAttachment[]
@@ -43,6 +45,6 @@ export function getOpenStreetMapUrl(location: MemoLocation): string {
 }
 
 export function getMemoPublicUrl(instanceUrl: string, shortId: string): string {
-  const base = instanceUrl.replace(/\/$/, '')
-  return `${base}/m/${shortId}`
+  const base = (instanceUrl || inferInstanceUrl(getMemosApiUrl())).replace(/\/$/, '')
+  return `${base}/memos/${shortId}`
 }

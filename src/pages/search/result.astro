@@ -16,15 +16,11 @@ const searchTitle = q ? `搜索: ${q}` : '搜索'
 
 <BaseLayout title={`${searchTitle} - ${site.title}`} seo={{ noindex: true }}>
   <Fragment slot="header">
-    <SiteHeader site={site} />
-    <SiteNavigation />
+    <SiteHeader site={site}>
+      <SiteNavigation />
+    </SiteHeader>
   </Fragment>
-  <div class="mx-auto max-w-[680px] px-4 py-8">
-    <MemosPage
-      memos={info.memos}
-      instanceUrl={info.instanceUrl}
-      nextPageToken={info.nextPageToken}
-      title={q ? `搜索: ${q}` : undefined}
-    />
+  <div class="mx-auto max-w-[680px] px-4 pt-1 pb-8">
+    <MemosPage memos={info.memos} nextPageToken={info.nextPageToken} title={q ? `搜索: ${q}` : undefined} />
   </div>
 </BaseLayout>

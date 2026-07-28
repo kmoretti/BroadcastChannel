@@ -40,7 +40,7 @@ export function getMemo(id: string): Promise<MemoItem> {
 
 export function searchMemos(q: string, params: { pageSize?: number, pageToken?: string } = {}): Promise<ListMemosResponse> {
   const escaped = q.replace(/\\/g, '\\\\').replace(/'/g, '\\\'')
-  const filter = `content.contains('${escaped}') || tags.contains('${escaped}')`
+  const filter = `content.contains('${escaped}') || '${escaped}' in tags`
   return listMemos({ ...params, filter })
 }
 

@@ -159,15 +159,15 @@ export interface MemoInfo {
 
 封装所有 Memos API 调用：
 
-| 函数 | 端点 | 说明 |
-|------|------|------|
-| `listMemos(params)` | `GET /api/v1/memos` | 列表，支持 `pageSize`、`pageToken`、`filter` |
-| `getMemo(id)` | `GET /api/v1/memos/{id}` | 单条 memo |
-| `searchMemos(q)` | `GET /api/v1/memos?filter=...` | 使用 CEL 过滤 content/tags |
-| `listComments(id)` | `GET /api/v1/memos/{id}/comments` | 评论列表 |
-| `listReactions(id)` | `GET /api/v1/memos/{id}/reactions` | 反应列表（备用，列表接口已内嵌） |
-| `getInstanceProfile()` | `GET /api/v1/instance/profile` | 实例信息 |
-| `getUser(username)` | `GET /api/v1/users/{username}` | 作者详情 |
+| 函数                   | 端点                               | 说明                                         |
+| ---------------------- | ---------------------------------- | -------------------------------------------- |
+| `listMemos(params)`    | `GET /api/v1/memos`                | 列表，支持 `pageSize`、`pageToken`、`filter` |
+| `getMemo(id)`          | `GET /api/v1/memos/{id}`           | 单条 memo                                    |
+| `searchMemos(q)`       | `GET /api/v1/memos?filter=...`     | 使用 CEL 过滤 content/tags                   |
+| `listComments(id)`     | `GET /api/v1/memos/{id}/comments`  | 评论列表                                     |
+| `listReactions(id)`    | `GET /api/v1/memos/{id}/reactions` | 反应列表（备用，列表接口已内嵌）             |
+| `getInstanceProfile()` | `GET /api/v1/instance/profile`     | 实例信息                                     |
+| `getUser(username)`    | `GET /api/v1/users/{username}`     | 作者详情                                     |
 
 ### 5.2 `src/lib/memos/cache.ts`
 
@@ -224,19 +224,24 @@ export interface MemoInfo {
 
 ### 6.2 附件
 
-| MIME 前缀 | 渲染 |
-|-----------|------|
-| `image/*` | 内联图片，点击打开 popover 灯箱 |
-| `video/*` | `<video controls>` |
-| `audio/*` | `<audio controls>` |
-| 其他 | 下载卡片（文件名 + 大小 + 下载链接） |
+| MIME 前缀 | 渲染                                 |
+| --------- | ------------------------------------ |
+| `image/*` | 内联图片，点击打开 popover 灯箱      |
+| `video/*` | `<video controls>`                   |
+| `audio/*` | `<audio controls>`                   |
+| 其他      | 下载卡片（文件名 + 大小 + 下载链接） |
 
 多图布局：单张全宽；2 张 50/50；3 张 33/33/33；4 张 2×2；超过 4 张显示「+N」浮层。
 
 ### 6.3 位置卡片
 
 ```html
-<a class="memo-location" href="https://www.openstreetmap.org/?mlat=lat&mlon=lon#map=16/lat/lon" target="_blank" rel="noopener noreferrer">
+<a
+  class="memo-location"
+  href="https://www.openstreetmap.org/?mlat=lat&mlon=lon#map=16/lat/lon"
+  target="_blank"
+  rel="noopener noreferrer"
+>
   <Icon name="ri:map-pin-line" />
   <span>{placeholder}</span>
 </a>
@@ -269,18 +274,18 @@ export interface MemoInfo {
 
 ## 7. 页面改造
 
-| 页面 | 改造 |
-|------|------|
-| `index.astro` | `getMemosInfo()`，置顶 memo 排在最前，普通 memo 按时间倒序 |
-| `before/[cursor].astro` | 使用 `pageToken` 加载更早 memo |
-| `after/[cursor].astro` | 删除该路由；旧的 `/after/*` 301 重定向到首页 `/` |
-| `posts/[id].astro` | `getMemoById(id)` + `getMemoComments(id)` |
-| `search/result.astro` | `searchMemos(q)` |
-| `tags.astro` | 聚合所有 memo 的 `tags` 展示为标签云 |
-| `links.astro` | 调用友链 API 展示 |
-| `rss.xml.ts` / `rss.json.ts` | 数据源改为 Memos |
-| `sitemap.xml.ts` / `sitemap/[cursor].xml.ts` | 数据源改为 Memos |
-| `site.webmanifest.ts` | 标题/头像从 Memos 实例读取 |
+| 页面                                         | 改造                                                       |
+| -------------------------------------------- | ---------------------------------------------------------- |
+| `index.astro`                                | `getMemosInfo()`，置顶 memo 排在最前，普通 memo 按时间倒序 |
+| `before/[cursor].astro`                      | 使用 `pageToken` 加载更早 memo                             |
+| `after/[cursor].astro`                       | 删除该路由；旧的 `/after/*` 301 重定向到首页 `/`           |
+| `posts/[id].astro`                           | `getMemoById(id)` + `getMemoComments(id)`                  |
+| `search/result.astro`                        | `searchMemos(q)`                                           |
+| `tags.astro`                                 | 聚合所有 memo 的 `tags` 展示为标签云                       |
+| `links.astro`                                | 调用友链 API 展示                                          |
+| `rss.xml.ts` / `rss.json.ts`                 | 数据源改为 Memos                                           |
+| `sitemap.xml.ts` / `sitemap/[cursor].xml.ts` | 数据源改为 Memos                                           |
+| `site.webmanifest.ts`                        | 标题/头像从 Memos 实例读取                                 |
 
 ---
 
@@ -383,9 +388,9 @@ FRIEND_LINK_APPLY_URL=https://blog-api.2005815.xyz/friend-apply
 
 ## 15. 风险
 
-| 风险 | 缓解 |
-|------|------|
-| Memos API 返回结构变化 | 使用类型 + parse 层隔离，API 变化时只改 `api.ts` / `parse.ts`； |
-| 公开接口读取受限 | 当前已验证无需 Token，如后续需 Token 则在 `api.ts` 注入 `MEMOS_ACCESS_TOKEN`； |
-| 附件签名 URL 过期 | Memos `externalLink` 含过期签名，使用服务端缓存时 URL 也会缓存，必要时缩短缓存时间或代理附件； |
-| 评论数量无直接字段 | 详情页加载评论列表，首页不展示评论数。 |
+| 风险                   | 缓解                                                                                           |
+| ---------------------- | ---------------------------------------------------------------------------------------------- |
+| Memos API 返回结构变化 | 使用类型 + parse 层隔离，API 变化时只改 `api.ts` / `parse.ts`；                                |
+| 公开接口读取受限       | 当前已验证无需 Token，如后续需 Token 则在 `api.ts` 注入 `MEMOS_ACCESS_TOKEN`；                 |
+| 附件签名 URL 过期      | Memos `externalLink` 含过期签名，使用服务端缓存时 URL 也会缓存，必要时缩短缓存时间或代理附件； |
+| 评论数量无直接字段     | 详情页加载评论列表，首页不展示评论数。                                                         |

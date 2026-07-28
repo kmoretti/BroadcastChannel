@@ -1,6 +1,6 @@
 # 广播频道
 
-**将你的 Telegram Channel 转为微博客。**
+**将你的 Memos 实例转为微博客。**
 
 ---
 
@@ -10,7 +10,7 @@
 
 ## ✨ 特性
 
-- **将 Telegram Channel 转为微博客**
+- **将 Memos 实例转为微博客**
 - **SEO 友好** `/sitemap.xml`
 - **浏览器端 0 JS**
 - **提供 RSS 和 RSS JSON** `/rss.xml` `/rss.json`
@@ -66,13 +66,12 @@ Cloudflare Pages SSR 在当前 Astro 6 + @astrojs/cloudflare v13 下不受支持
 ## 🧱 技术栈
 
 - 框架：[Astro](https://astro.build/)
-- 内容管理系统：[Telegram Channels](https://telegram.org/tour/channels)
+- 内容管理系统：[Memos](https://usememos.com)
 - 主题灵感与 CSS 兼容来源：[Bear Blog](https://github.com/HermanMartinus/bearblog)（独立实现，与 Bear 无官方关系，未包含其源文件）
 - 可选主题：[Sepia](https://github.com/Planetable/SiteTemplateSepia)
 - 可选主题灵感：[Terminal](https://github.com/panr/hugo-theme-terminal)
 - 可选主题灵感：[Aria](https://github.com/miantiao-me/astro-aria)
 - 可选主题视觉灵感：[Hacker News](https://news.ycombinator.com/)（由 Y Combinator 运营，独立实现，与其无官方关系）
-- 可选主题视觉灵感：[Telegram 公开频道预览](https://t.me/s/)（独立实现，与 Telegram Messenger Inc. 无官方关系）
 - 可选主题视觉灵感：[Zed 的 Agentic Engineering 页面](https://zed.dev/agentic-engineering)（独立实现，与 Zed Industries, Inc. 无官方关系）
 
 ## 🏗️ 部署
@@ -82,14 +81,14 @@ Cloudflare Pages SSR 在当前 Astro 6 + @astrojs/cloudflare v13 下不受支持
 ### Docker
 
 1. `docker pull ghcr.io/miantiao-me/broadcastchannel:main`
-2. `docker run -d --name broadcastchannel -p 4321:4321 -e CHANNEL=miantiao_me ghcr.io/miantiao-me/broadcastchannel:main`
+2. `docker run -d --name broadcastchannel -p 4321:4321 -e MEMOS_API_URL=https://mm.2005815.xyz/api/v1 ghcr.io/miantiao-me/broadcastchannel:main`
 
 ### Serverless
 
 1. [Fork](https://github.com/miantiao-me/BroadcastChannel/fork) 此项目到你 GitHub
 2. 在 Cloudflare Workers/Netlify/Vercel/EdgeOne 创建项目
 3. 选择 `BroadcastChannel` 项目和 `Astro` 框架
-4. 配置环境变量 `CHANNEL` 为你的频道名称。此为最小化配置，更多见 [配置](#configuration)
+4. 配置环境变量 `MEMOS_API_URL` 为你的 Memos API 地址。此为最小化配置，更多见 [配置](#configuration)
 5. 保存并部署
 6. 绑定域名（可选）
 7. 更新代码，参考 GitHub 官方文档 [从 Web UI 同步分叉分支](https://docs.github.com/zh/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork#syncing-a-fork-branch-from-the-web-ui)
@@ -104,7 +103,7 @@ SERVER_ADAPTER=cloudflare_workers pnpm build
 pnpm exec wrangler deploy
 ```
 
-请在 Workers 控制台配置 `CHANNEL` 等运行时变量，或使用 `pnpm exec wrangler secret put CHANNEL`。
+请在 Workers 控制台配置 `MEMOS_API_URL` 等运行时变量，或使用 `pnpm exec wrangler secret put MEMOS_API_URL`。
 Cloudflare Pages SSR 在 Astro 6 + @astrojs/cloudflare v13 下不受支持，请将 Pages 部署迁移到 Workers。
 
 ## ⚒️ 配置
@@ -113,10 +112,10 @@ Cloudflare Pages SSR 在 Astro 6 + @astrojs/cloudflare v13 下不受支持，请
 
 ### 最小配置
 
-只需配置 `CHANNEL`：公开 Telegram 频道用户名（`t.me/` 后面那串字符）。
+只需配置 `MEMOS_API_URL`：你的 Memos API 地址。
 
 ```env
-CHANNEL=miantiao_me
+MEMOS_API_URL=https://mm.2005815.xyz/api/v1
 ```
 
 ### 完整参考
@@ -125,53 +124,55 @@ CHANNEL=miantiao_me
 
 ```env
 ## 必填
-CHANNEL=miantiao_me
+MEMOS_API_URL=https://mm.2005815.xyz/api/v1
 
-## 语言与时区（Intl/BCP 47 locale，例如 zh-CN 或 en）
+## 只展示指定创作者的公开 memo（半角逗号分隔）
+MEMOS_CREATORS=kemiao
+
+## 每页数量（默认 20）
+MEMOS_PAGE_SIZE=20
+
+## 站点信息覆盖
+MEMOS_TITLE=我的朋友圈
+MEMOS_DESCRIPTION=
+MEMOS_AVATAR=
+
+## 站点文字 Logo（可选，例如 <mt/>；不填则使用头像）
+MEMOS_LOGO=
+
+## 创作者信息覆盖（可选，会覆盖每条 memo 的作者头像和昵称）
+MEMOS_CREATOR_NAME=
+MEMOS_CREATOR_AVATAR=
+
+## 语言（BCP 47 locale，例如 zh-CN 或 en）
 LOCALE=zh-CN
-TIMEZONE=Asia/Shanghai
 
 ## 社交媒体用户名
-TELEGRAM=miantiao-me
 TWITTER=miantiao-me
-GITHUB=miantiao-me
-MASTODON=mastodon.social/@Mastodon
-BLUESKY=bsky.app
-
-## 社交媒体 URL（需完整 URL）
-DISCORD=https://DISCORD.com
-PODCAST=https://PODCAST.com
 
 ## 可信管理员原始 HTML 注入（页头 / 页脚）
 HEADER_INJECT=
 FOOTER_INJECT=
 
-## SEO
-NOFOLLOW=false
-NOINDEX=false
+## 友链
+FRIEND_LINK_API_URL=https://blog-api.2005815.xyz/
+FRIEND_LINK_APPLY_URL=https://blog-api.2005815.xyz/friend-apply
 
-## 界面
-HIDE_DESCRIPTION=false
-COMMENTS=true
-REACTIONS=true
-RSS_BEAUTIFY=true
-
-## 标签、链接与导航（英文逗号 / 分号分隔）
-TAGS=标签A,标签B,标签C
-LINKS=Title1,URL1;Title2,URL2;Title3,URL3;
-NAVS=Title1,URL1;Title2,URL2;Title3,URL3;
-
-## 搜索
-GOOGLE_SEARCH_SITE=memo.miantiao.me
+## 页头社会化链接（可选）
+SOCIAL_RSS_URL=/rss.xml
+SOCIAL_X_URL=https://x.com/miantiao_me
+SOCIAL_GITHUB_URL=https://github.com/miantiao-me
+SOCIAL_TELEGRAM_URL=https://t.me/miantiao_chat
+SOCIAL_QQ_URL=https://qm.qq.com/q/xxxxxx
+SOCIAL_EMAIL_URL=mailto:hello@example.com
+SOCIAL_BILIBILI_URL=https://space.bilibili.com/xxxxxx
 
 ## 高级（一般无需修改）
-TELEGRAM_HOST=telegram.dog
-STATIC_PROXY=
 # 需要时覆盖自动适配器检测。
 SERVER_ADAPTER=
-# 在默认白名单基础上追加代理目标；仅填写域名，以英文逗号分隔（不含协议、端口或路径）。
-TARGET_WHITELIST=a.com,b.com
 ```
+
+站点介绍文案可编辑 `src/content/site-intro.md`，支持 Markdown 链接。
 
 ## 🎨 主题
 
@@ -186,28 +187,25 @@ TARGET_WHITELIST=a.com,b.com
 | Terminal Cyan    | `/themes/terminal-cyan.css`    |
 | Terminal Magenta | `/themes/terminal-magenta.css` |
 | HN News          | `/themes/hn-news.css`          |
-| TG Channel       | `/themes/tg-channel.css`       |
 | ZAE              | `/themes/zae.css`              |
 
 ```env
 HEADER_INJECT='<link rel="stylesheet" href="/themes/aria.css">'
 ```
 
-HN News、TG Channel 和 ZAE 是固定浅色主题。不要直接加载 `/themes/terminal-base.css`；项目不存在 `/themes/terminal.css`。
+HN News 和 ZAE 是固定浅色主题。不要直接加载 `/themes/terminal-base.css`；项目不存在 `/themes/terminal.css`。
 
 完整配置、明暗模式、平台控制台写法、自定义 CSS 与安全边界见 **[THEMES.md](./THEMES.md)**。主题归属见 **[NOTICE.md](./NOTICE.md)**。
 
 ## 🙋🏻 常问问题
 
 1. 为什么部署后内容为空？
-   - 频道必须是**公开**的
-   - 频道用户名是**字符串**，不是数字
-   - 关闭频道 **Restricting Saving Content** 设置
+   - `MEMOS_API_URL` 必须能从部署环境访问
+   - Memos 实例上的对应 memo 必须是**公开**的
+   - 检查 `MEMOS_CREATORS` 是否过滤掉了目标用户
    - 修改环境变量后需要**重新部署**
-   - Telegram 会屏蔽部分敏感频道的公开展示，可访问 `https://t.me/s/频道用户名` 确认
 
 ## ☕ 赞助
 
-1. [在 Telegram 关注我](https://t.me/miantiao_me)
-2. [在 𝕏 上关注我](https://404.li/x)
-3. [在 GitHub 赞助我](https://github.com/sponsors/miantiao-me)
+1. [在 𝕏 上关注我](https://404.li/x)
+2. [在 GitHub 赞助我](https://github.com/sponsors/miantiao-me)

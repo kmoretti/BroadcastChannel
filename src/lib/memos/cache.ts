@@ -27,3 +27,8 @@ export const getCachedInstanceProfile = defineCachedFunction(api.getInstanceProf
   ...cacheOptions,
   getKey: () => 'memos:instance:profile',
 })
+
+export const getCachedGetUser = defineCachedFunction(api.getUser, {
+  ...cacheOptions,
+  getKey: (username: string) => `memos:user:${username}`,
+})
