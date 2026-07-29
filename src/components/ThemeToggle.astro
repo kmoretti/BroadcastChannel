@@ -28,6 +28,7 @@ import { Icon } from 'astro-icon/components'
 
     function applyTheme(dark) {
       root.classList.toggle('dark', dark)
+      root.style.colorScheme = dark ? 'dark' : 'light'
       const toggle = document.getElementById('theme-toggle')
       const lightIcon = toggle?.querySelector('.theme-icon-light')
       const darkIcon = toggle?.querySelector('.theme-icon-dark')

@@ -14,9 +14,9 @@ const { currentPathname = Astro.url.pathname, googleSearchSite, navs = [], siteU
 
 const blogUrl = getBlogUrl()
 const primaryNavItems = [
-  { href: `${siteUrl}/`, pathname: `${siteUrl}/`, title: 'Home' },
-  { href: `${siteUrl}/tags`, pathname: `${siteUrl}/tags`, title: 'Tags' },
-  { href: `${siteUrl}/links`, pathname: `${siteUrl}/links`, title: 'Links' },
+  { href: `${siteUrl}/`, pathname: `${siteUrl}/`, title: '首页' },
+  { href: `${siteUrl}/tags`, pathname: `${siteUrl}/tags`, title: '标签' },
+  { href: `${siteUrl}/links`, pathname: `${siteUrl}/links`, title: '友链' },
   ...(blogUrl ? [{ href: blogUrl, pathname: blogUrl, title: 'Blog', external: true }] : []),
 ]
 ---

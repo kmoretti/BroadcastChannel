@@ -4,8 +4,9 @@ export const prerender = false
 import BaseLayout from '../layouts/BaseLayout.astro'
 import SiteHeader from '../components/SiteHeader.astro'
 import SiteNavigation from '../components/SiteNavigation.astro'
+import FriendApplyForm from '../components/FriendApplyForm.astro'
 import { getSiteInfo } from '../lib/memos/instance.ts'
-import { getFriendLinkApiUrl, getFriendLinkApplyUrl } from '../lib/env.ts'
+import { getFriendLinkApiUrl } from '../lib/env.ts'
 import type { FriendLinkResponse } from '../types.ts'
 import { ofetch } from 'ofetch'
 
@@ -27,7 +28,7 @@ try {
 }
 
 const site = await getSiteInfo()
-const applyUrl = getFriendLinkApplyUrl()
+const submitUrl = `${apiUrl}/api/public/friend/apply`
 ---
 
 <BaseLayout title={`友链 - ${site.title}`}>
@@ -58,14 +59,6 @@ const applyUrl = getFriendLinkApplyUrl()
         ))
       }
     </div>
-    {
-      applyUrl && (
-        <div class="mt-8">
-          <a href={applyUrl} target="_blank" rel="noopener noreferrer" class="text-[var(--link)] hover:underline">
-            申请友链 →
-          </a>
-        </div>
-      )
-    }
+    <FriendApplyForm submitUrl={submitUrl} apiUrl={apiUrl} siteName={site.title} />
   </div>
 </BaseLayout>

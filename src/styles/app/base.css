@@ -6,9 +6,13 @@
   }
 
   html {
-    color-scheme: light dark;
+    color-scheme: light;
     scroll-behavior: smooth;
     background: var(--background-color);
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
