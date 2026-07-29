@@ -9,6 +9,15 @@
     .site-navigation {
       align-items: flex-start;
       flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .site-navigation > ul {
+      gap: 0.9rem;
+    }
+
+    .site-navigation a {
+      font-size: 1.05rem;
     }
 
     .desktop-search {
@@ -20,19 +29,32 @@
       margin-left: auto;
     }
 
-    .mobile-search[open] {
-      width: 100%;
-    }
-
     .mobile-search summary {
-      display: flex;
-      width: 2.75rem;
-      height: 2.75rem;
+      display: inline-flex;
+      width: 2.5rem;
+      height: 2.5rem;
       align-items: center;
       justify-content: center;
       margin-left: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--background-color) 92%, var(--text-color));
+      color: var(--muted-color);
       cursor: pointer;
       list-style: none;
+      transition:
+        border-color 150ms ease,
+        color 150ms ease,
+        background-color 150ms ease,
+        box-shadow 150ms ease;
+    }
+
+    .mobile-search summary:hover,
+    .mobile-search[open] summary {
+      border-color: var(--link-color);
+      color: var(--link-color);
+      background: var(--background-color);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--link-color) 18%, transparent);
     }
 
     .mobile-search summary::-webkit-details-marker {
@@ -40,13 +62,26 @@
     }
 
     .mobile-search summary svg {
-      width: 1rem;
-      height: 1rem;
+      width: 1.05rem;
+      height: 1.05rem;
+    }
+
+    .mobile-search[open] {
+      width: 100%;
+    }
+
+    .mobile-search[open] summary {
+      margin-left: 0;
     }
 
     .mobile-search form {
       width: 100%;
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
+    }
+
+    .mobile-search .search-field {
+      min-height: 2.5rem;
+      padding-left: 0.9rem;
     }
 
     .mobile-search .search-input {
